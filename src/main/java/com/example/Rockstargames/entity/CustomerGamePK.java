@@ -1,4 +1,8 @@
 package com.example.Rockstargames.entity;
 
-public class CustomerGamePK {
+import java.io.Serializable;
+
+public class CustomerGamePK implements Serializable {
+    private String customer_id;
+    private String game_id;
 }
