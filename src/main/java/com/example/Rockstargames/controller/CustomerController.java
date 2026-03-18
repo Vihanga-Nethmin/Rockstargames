@@ -17,7 +17,7 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<APIResponse<String>>addCustomer(@RequestBody @Valid CustomerDto customerDto) {
+    public ResponseEntity<APIResponse<String>>addCustomer(@RequestBody CustomerDto customerDto) {
         customerService.save(customerDto);
         return new ResponseEntity<>(new APIResponse<>(201,"Customer Saved",null), HttpStatus.CREATED);
 
