@@ -1,8 +1,28 @@
 package com.example.Rockstargames.controller;
 
+import com.example.Rockstargames.dto.CustomerDto;
+import com.example.Rockstargames.service.CustomerService;
+import com.example.Rockstargames.utill.APIResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@CrossOrigin(originPatterns = "*")
+@RestController
+@RequestMapping("api/v1/customer")
+
 public class CustomerController {
-    public static void main(String[] args) {
-        System.out.println("Hello World");
+    @Autowired
+    private CustomerService customerService;
+
+    @PostMapping
+    public ResponseEntity<APIResponse<String>>addCustomer(@RequestBody @Valid CustomerDto customerDto) {
+        customerService.save(customerDto);
+        return new ResponseEntity<>(new APIResponse<>(201,"Customer Saved",null), HttpStatus.CREATED);
+
     }
+
+
 
 }
