@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Game {
     @Id
-    private String gameId;
+    private String game_id;
     private String title;
     private String description;
     private String price;

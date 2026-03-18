@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class OrderDetail {
     @Id
-    private String orderId;
+    private String order_id;
     private String order_date;
     private String total_amount;
     private String customer_id;
