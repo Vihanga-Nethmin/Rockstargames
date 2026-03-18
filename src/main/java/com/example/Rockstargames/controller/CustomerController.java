@@ -3,6 +3,7 @@ package com.example.Rockstargames.controller;
 import com.example.Rockstargames.dto.CustomerDto;
 import com.example.Rockstargames.service.CustomerService;
 import com.example.Rockstargames.utill.APIResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<APIResponse<String>>addCustomer(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<APIResponse<String>>addCustomer(@RequestBody @Valid  CustomerDto customerDto) {
         customerService.save(customerDto);
         return new ResponseEntity<>(new APIResponse<>(201,"Customer Saved",null), HttpStatus.CREATED);
 

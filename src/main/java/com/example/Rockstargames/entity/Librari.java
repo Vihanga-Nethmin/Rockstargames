@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 
-public class Library {
+public class Librari {
     @Id
     private String library_id;
     private String customer_id;

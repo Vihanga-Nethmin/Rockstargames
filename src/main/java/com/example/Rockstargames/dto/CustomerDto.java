@@ -12,16 +12,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerDto {
+
     @NotNull(message = "Customer Id is mandatory")
-    private String id;
+    private String customer_id;
 
-    @NotBlank
-    @Pattern(regexp = "[\\p{L} .'-]+$",message = "customer name is Incorrect")
-
+    @NotBlank(message = "Name is mandatory")
+    @Pattern(regexp = "[\\p{L} .'-]+$", message = "customer name is Incorrect")
     private String name;
 
-    @Size(min = 10,max = 100,message = "MIN 10 & Max 100")
+    @Size(min = 10, max = 100, message = "Address must be between 10 and 100 characters")
     private String address;
 
+    // Add these two fields (you are sending them in JSON)
+    @NotBlank(message = "Email is mandatory")
+    private String email;
 
+    @NotBlank(message = "Password is mandatory")
+    private String password;
 }

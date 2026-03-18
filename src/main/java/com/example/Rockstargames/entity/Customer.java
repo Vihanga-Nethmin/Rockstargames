@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Customer {
-@Id
+
+    @Id
     private String customer_id;
     private String name;
     private String email;
