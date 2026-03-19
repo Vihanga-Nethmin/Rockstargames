@@ -37,8 +37,4 @@ public class CustomerServiceImpl implements CustomerService {
 
     }
 
-    @Override
-    public void update(CustomerDto customerDto) {
-
-    }
 }
