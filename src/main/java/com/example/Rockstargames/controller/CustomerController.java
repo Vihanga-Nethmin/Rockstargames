@@ -27,6 +27,7 @@ public class CustomerController {
     @PutMapping
     public ResponseEntity<APIResponse<String>>updateCustomer(@RequestBody @Valid  CustomerDto customerDto) {
         customerService.update(customerDto);
+        return new ResponseEntity<>(new APIResponse<>(200,"Customer Updated",null), HttpStatus.CREATED);
     }
 
 
