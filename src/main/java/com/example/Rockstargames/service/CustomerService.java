@@ -8,5 +8,6 @@ import org.springframework.stereotype.Service;
 public interface CustomerService {
     void save(CustomerDto customerDto);
     void update(CustomerDto customerDto);
+    void delete(String id);
 }
 
