@@ -39,6 +39,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void update(CustomerDto customerDto) {
+        if (customerDto==null){
+            throw new NullPointerException("CustomerDto is null");
+        }
+        customerRepository.save(modelMapper.map(customerDto, Customer.class));
+
 
     }
 
