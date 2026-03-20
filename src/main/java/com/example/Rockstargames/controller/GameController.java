@@ -22,7 +22,13 @@ public class GameController {
     @PostMapping
     public ResponseEntity<APIResponse<String>>addGame(@RequestBody @Valid GameDto gameDto) {
         gameService.save(gameDto);
-        return new ResponseEntity<>(new APIResponse<>(201,"game Added",null), HttpStatus.OK);
+        return new ResponseEntity<>(new APIResponse<>(200,"game Added",null), HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<APIResponse<String>>updateGame(@RequestBody @Valid GameDto gameDto) {
+        gameService.update(gameDto);
+        return new ResponseEntity<>(new APIResponse<>(201,"game Updated",null), HttpStatus.OK);
     }
 
 

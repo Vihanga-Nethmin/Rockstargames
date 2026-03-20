@@ -31,4 +31,14 @@ public class GameServiceImpl implements GameService {
 
 
     }
+
+    @Override
+    public void update(GameDto gameDto) {
+        if (gameDto==null){
+            throw new NullPointerException("GameDto is null");
+        }
+        gameRepository.save(modelMapper.map(gameDto, Game.class));
+
+
+    }
 }
