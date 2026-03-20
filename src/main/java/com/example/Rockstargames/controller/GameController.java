@@ -31,6 +31,13 @@ public class GameController {
         return new ResponseEntity<>(new APIResponse<>(201,"game Updated",null), HttpStatus.OK);
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<APIResponse<String>>deleteGame(@PathVariable String id) {
+        gameService.delete(id);
+        return new ResponseEntity<>(new APIResponse<>(200,"game Deleted",null), HttpStatus.OK);
+
+    }
+
 
 
 }
