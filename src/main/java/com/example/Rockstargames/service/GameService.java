@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 public interface GameService {
     void save(GameDto gameDto);
     void update(GameDto gameDto);
+    void delete(String id);
 }
