@@ -47,4 +47,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     }
 
+    @Override
+    public void delete(String id) {
+        if (id==null){
+            throw new NullPointerException("Customer id is null");
+        }
+        customerRepository.deleteById(id);
+
+
+    }
+
 }
