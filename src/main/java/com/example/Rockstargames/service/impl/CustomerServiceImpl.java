@@ -61,7 +61,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerDto> getAll() {
-return modelMapper.map(customerRepository.findAll(), new TypeToken<List<CustomerDto>>() {}.getType());
+      return modelMapper.map(customerRepository.findAll(), new TypeToken<List<CustomerDto>>() {}.getType());
 
     }
 

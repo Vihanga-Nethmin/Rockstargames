@@ -1,13 +1,17 @@
 package com.example.Rockstargames.service.impl;
 
+import com.example.Rockstargames.dto.CustomerDto;
 import com.example.Rockstargames.dto.GameDto;
 import com.example.Rockstargames.entity.Game;
 import com.example.Rockstargames.exception.CustomException;
 import com.example.Rockstargames.repository.GameRepository;
 import com.example.Rockstargames.service.GameService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -28,8 +32,6 @@ public class GameServiceImpl implements GameService {
         }
         gameRepository.save(modelMapper.map(gameDto, Game.class));
 
-
-
     }
 
     @Override
@@ -39,7 +41,6 @@ public class GameServiceImpl implements GameService {
         }
         gameRepository.save(modelMapper.map(gameDto, Game.class));
 
-
     }
 
     @Override
@@ -48,6 +49,11 @@ public class GameServiceImpl implements GameService {
             throw new NullPointerException("Game id is null");
         }
         gameRepository.deleteById(id);
+    }
+
+    @Override
+    public List<GameDto> getAll() {
+        return modelMapper.map(gameRepository.findAll(), new TypeToken<List<GameDto>>() {}.getType());
 
     }
 }

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(originPatterns = "*")
 @RestController
 @RequestMapping("api/v1/Game")
@@ -36,6 +38,11 @@ public class GameController {
         gameService.delete(id);
         return new ResponseEntity<>(new APIResponse<>(200,"game Deleted",null), HttpStatus.OK);
 
+    }
+
+    @GetMapping("/all")
+    public List<GameDto> getAllGames() {
+        return gameService.getAll();
     }
 
 
