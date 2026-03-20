@@ -16,6 +16,10 @@ public class GameDto {
     @NotNull(message = "Game Id is mandatory")
     private String game_id;
 
+    // Add these two fields (you are sending them in JSON)
+    @NotBlank(message = "Title")
+    private String title;
+
     @NotBlank(message = "description mandatory")
     private String description;
 
@@ -23,7 +27,5 @@ public class GameDto {
     @Pattern(regexp = "^Rs\\s?\\d+(\\.\\d{1,2})?$", message = "Price must be in format Rs 100 or Rs 100.00")
     private String price;
 
-    // Add these two fields (you are sending them in JSON)
-    @NotBlank(message = "Title")
-    private String title;
+
 }
