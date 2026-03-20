@@ -44,6 +44,10 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void delete(String id) {
+        if (id==null){
+            throw new NullPointerException("Game id is null");
+        }
+        gameRepository.deleteById(id);
 
     }
 }
