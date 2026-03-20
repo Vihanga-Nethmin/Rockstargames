@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface GameService {
     void save(GameDto gameDto);
+    void update(GameDto gameDto);
 }
