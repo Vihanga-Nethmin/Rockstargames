@@ -41,4 +41,9 @@ public class GameServiceImpl implements GameService {
 
 
     }
+
+    @Override
+    public void delete(String id) {
+
+    }
 }
