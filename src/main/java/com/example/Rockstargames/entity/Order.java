@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class OrderItem {
+public class Order {
     @Id
-    private String order_item_id;
     private String order_id;
     private String game_id;
     private String price;
