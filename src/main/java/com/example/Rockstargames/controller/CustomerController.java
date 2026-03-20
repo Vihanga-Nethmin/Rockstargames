@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @CrossOrigin(originPatterns = "*")
@@ -37,5 +39,11 @@ public class CustomerController {
     public ResponseEntity<APIResponse<String>>deleteCustomer(@PathVariable String id) {
         customerService.delete(id);
         return new ResponseEntity<>(new APIResponse<>(200,"Customer Deleted",null), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public List<CustomerDto> getAllCustomers() {
+        return customerService.getAll();
+
     }
 }
