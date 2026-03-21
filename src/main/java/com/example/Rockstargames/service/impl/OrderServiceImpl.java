@@ -39,6 +39,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void update(OrderDto orderdto) {
+        if (orderdto==null){
+            throw new NullPointerException("orderdto is null");
+        }
+
+        orderRepository.save(modelMapper.map(orderdto, Order.class));
 
     }
 
