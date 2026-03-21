@@ -1,5 +1,6 @@
 package com.example.Rockstargames.service.impl;
 
+import com.example.Rockstargames.dto.GameDto;
 import com.example.Rockstargames.dto.OrderDto;
 import com.example.Rockstargames.entity.Game;
 import com.example.Rockstargames.entity.Order;
@@ -8,6 +9,7 @@ import com.example.Rockstargames.repository.CustomerRepository;
 import com.example.Rockstargames.repository.OrderRepository;
 import com.example.Rockstargames.service.OrderService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -58,6 +60,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getAll() {
-        return List.of();
+        return modelMapper.map(orderRepository.findAll(), new TypeToken<List<OrderDto>>() {}.getType());
     }
 }

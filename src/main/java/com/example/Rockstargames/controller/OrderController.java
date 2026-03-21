@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(originPatterns = "*")
 @RestController
 @RequestMapping("api/v1/order")
@@ -35,6 +37,11 @@ public class OrderController {
     public ResponseEntity<APIResponse<String>> deleteOrder(@PathVariable String id) {
         orderService.delete(id);
         return new ResponseEntity<>(new APIResponse<>(200,"Order Deleted",null), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public List<OrderDto> getAllOrders() {
+        return orderService.getAll();
     }
 
 
