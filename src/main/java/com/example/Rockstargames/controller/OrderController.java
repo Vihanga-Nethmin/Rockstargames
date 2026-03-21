@@ -31,6 +31,12 @@ public class OrderController {
         return new ResponseEntity<>(new APIResponse<>(201,"Order Updated",null), HttpStatus.OK);
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<APIResponse<String>> deleteOrder(@PathVariable String id) {
+        orderService.delete(id);
+        return new ResponseEntity<>(new APIResponse<>(200,"Order Deleted",null), HttpStatus.OK);
+    }
+
 
 
 
