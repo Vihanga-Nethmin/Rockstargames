@@ -25,6 +25,12 @@ public class OrderController {
 
     }
 
+    @PutMapping
+    public ResponseEntity<APIResponse<String>> updateOrder(@RequestBody OrderDto orderDto) {
+        orderService.update(orderDto);
+        return new ResponseEntity<>(new APIResponse<>(201,"Order Updated",null), HttpStatus.OK);
+    }
+
 
 
 
