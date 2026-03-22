@@ -41,6 +41,10 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void update(PaymentDto paymentdto) {
+        if (paymentdto==null){
+            throw new NullPointerException("PaymentDto is null");
+        }
+        paymentRepository.save(modelMapper.map(paymentdto, Payment.class));
 
     }
 

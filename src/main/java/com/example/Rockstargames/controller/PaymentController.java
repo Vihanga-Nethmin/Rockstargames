@@ -27,6 +27,12 @@ public class PaymentController {
         return new ResponseEntity<>(new APIResponse<>(201, "Payment Saved", null), HttpStatus.CREATED);
     }
 
+    @PutMapping
+    public ResponseEntity<APIResponse<String>>updatePayment(@RequestBody @Valid  PaymentDto paymentDto) {
+        paymentService.update(paymentDto);
+        return new ResponseEntity<>(new APIResponse<>(200,"Payment Updated",null), HttpStatus.CREATED);
+    }
+
 
 
 
