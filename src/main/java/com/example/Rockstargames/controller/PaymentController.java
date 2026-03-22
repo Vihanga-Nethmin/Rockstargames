@@ -34,6 +34,13 @@ public class PaymentController {
     }
 
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<APIResponse<String>>deletePayment(@PathVariable String id) {
+        paymentService.delete(id);
+        return new ResponseEntity<>(new APIResponse<>(200,"Payment Deleted",null), HttpStatus.OK);
+    }
+
+
 
 
 
