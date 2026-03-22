@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(originPatterns = "*")
 @RestController
 @RequestMapping("api/v1/payment")
@@ -40,7 +42,11 @@ public class PaymentController {
         return new ResponseEntity<>(new APIResponse<>(200,"Payment Deleted",null), HttpStatus.OK);
     }
 
+    @GetMapping("/all")
+    public List<PaymentDto> getAllCustomers() {
+        return paymentService.getAll();
 
+    }
 
 
 

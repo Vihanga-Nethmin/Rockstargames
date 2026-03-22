@@ -1,5 +1,6 @@
 package com.example.Rockstargames.service.impl;
 
+import com.example.Rockstargames.dto.CustomerDto;
 import com.example.Rockstargames.dto.PaymentDto;
 import com.example.Rockstargames.entity.Customer;
 import com.example.Rockstargames.entity.Payment;
@@ -8,6 +9,7 @@ import com.example.Rockstargames.repository.CustomerRepository;
 import com.example.Rockstargames.repository.PaymentRepository;
 import com.example.Rockstargames.service.PaymentService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +61,5 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public List<PaymentDto> getAll() {
-        return List.of();
-    }
+        return modelMapper.map(paymentRepository.findAll(), new TypeToken<List<PaymentDto>>() {}.getType());    }
 }
