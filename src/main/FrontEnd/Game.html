@@ -1,129 +1,346 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RockStarGames | Sign In</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Rockstar Games Gallery</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600&display=swap');
+
         :root {
-            --brand-color: rgba(255, 171, 0, 1);
-            --brand-bg-glow: rgba(255, 171, 0, 0.15);
-            --dark-bg: #0f0f0f;
-            --input-bg: #1a1a1a;
+            --bg: #0a0a0a;
+            --card-bg: #141414;
+            --text: #e0e0e0;
+            /* Updated Accent Color to Rockstar Gold */
+            --accent: #FFAB00;
+            --border: #2a2a2a;
+            --hover-border: #FFAB00;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--dark-bg);
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            font-family: 'Barlow', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 20px;
+            min-height: 100vh;
         }
 
-        .signin-card {
-            background-color: #000;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 0 20px var(--brand-bg-glow);
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .logo {
+        header {
             text-align: center;
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--brand-color);
-            margin-bottom: 30px;
+            margin: 20px 0 30px;
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--accent);
+            font-size: 3rem;
+            letter-spacing: 4px;
             text-transform: uppercase;
+            /* Applied your requested shadow effect */
+            text-shadow: 0 0 20px rgba(255, 171, 0, 0.6);
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 14px;
+            max-width: 1600px;
+            margin: 0 auto 40px;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            height: 320px;
+            cursor: default;
+        }
+
+        .game-card:hover {
+            transform: translateY(-4px) scale(1.03);
+            border-color: var(--hover-border);
+            box-shadow: 0 8px 30px rgba(255, 171, 0, 0.2);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            object-position: top;
+            border-bottom: 3px solid var(--accent);
+            background: #1a1a1a;
+        }
+
+        .game-info {
+            padding: 10px 12px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-info h3 {
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            line-height: 1.25;
+        }
+
+        .description {
+            font-size: 0.72rem;
+            color: #999;
+            flex-grow: 1;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+
+        .price {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 6px;
+        }
+
+        .add-form {
+            max-width: 420px;
+            margin: 0 auto 40px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .add-form h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 1.6rem;
             letter-spacing: 2px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
+        .add-form label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: #ccc;
+            margin: 10px 0 4px;
+            font-size: 0.78rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        input {
+        .add-form input,
+        .add-form textarea {
             width: 100%;
-            padding: 12px;
-            box-sizing: border-box;
-            background-color: var(--input-bg);
-            border: 1px solid #333;
-            border-radius: 4px;
-            color: white;
+            padding: 9px 10px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            background: #1c1c1c;
+            color: #fff;
+            font-size: 0.88rem;
+            font-family: 'Barlow', sans-serif;
+            transition: border-color 0.2s;
+        }
+
+        .add-form input:focus,
+        .add-form textarea:focus {
             outline: none;
-            transition: border-color 0.3s, background-color 0.3s;
+            border-color: var(--accent);
         }
 
-        input:focus {
-            border-color: var(--brand-color);
-            background-color: var(--brand-bg-glow);
-        }
-
-        .btn-signin {
+        .add-form button {
             width: 100%;
-            padding: 14px;
-            background-color: var(--brand-color);
-            color: black;
-            border: none;
-            border-radius: 4px;
+            padding: 11px;
+            background: var(--accent);
+            color: #000;
             font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 2px;
             cursor: pointer;
-            font-size: 1rem;
-            transition: opacity 0.3s;
+            margin-top: 14px;
+            transition: opacity 0.2s;
         }
 
-        .btn-signin:hover {
+        .add-form button:hover {
             opacity: 0.9;
         }
 
-        .footer-links {
-            margin-top: 20px;
+        .message {
+            margin-top: 12px;
             text-align: center;
             font-size: 0.85rem;
-            color: #777;
+            font-weight: 600;
+        }
+        .message.success { color: #00cc66; }
+        .message.error   { color: #ff4466; }
+
+        #status-bar {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #555;
+            margin-bottom: 18px;
+            letter-spacing: 1px;
         }
 
-        .footer-links a {
-            color: var(--brand-color);
-            text-decoration: none;
+        @media (max-width: 500px) {
+            h1 { font-size: 2rem; }
+            .gallery { gap: 10px; }
         }
     </style>
 </head>
 <body>
 
-<div class="signin-card">
-    <div class="logo">RockStarGames</div>
+<header>
+    <h1>Rockstar Games Gallery</h1>
+    <p class="subtitle">20 Legendary Titles</p>
+</header>
 
-    <form action="/login" method="POST">
-        <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required placeholder="name@example.com">
-        </div>
+<p id="status-bar">Loading games…</p>
+<section class="gallery" id="gallery"></section>
 
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required placeholder="••••••••">
-        </div>
+<section class="add-form">
+    <h2>Add Your Game</h2>
+    <form id="gameForm">
+        <label for="game_id">Game ID</label>
+        <input type="text" id="game_id" required placeholder="e.g. 21" />
 
-        <button type="submit" class="btn-signin">SIGN IN</button>
+        <label for="title">Title</label>
+        <input type="text" id="title" required placeholder="Game title" />
+
+        <label for="description">Description</label>
+        <textarea id="description" required placeholder="Short description…"></textarea>
+
+        <label for="price">Price</label>
+        <input type="text" id="price" required placeholder="Rs 999.00" />
+
+        <label for="imageUrl">Local Image Path (assets/name.jpg)</label>
+        <input type="text" id="imageUrl" placeholder="Assests/my-game.jpg" />
+
+        <button type="submit">Add Game</button>
     </form>
+    <div id="message" class="message"></div>
+</section>
 
-    <div class="footer-links">
-        Don't have an account? <a href="#">Create one</a>
-    </div>
-</div>
+<script>
+    const API_BASE = "http://localhost:8080/api/v1/Game";
+
+    const rockstarGames = [
+        { game_id:"1",  title:"Grand Theft Auto V",              description:"Epic open-world crime adventure set in Los Santos.",           price:"Rs 2999.00", imageUrl:"Assests/gta v.png" },
+        { game_id:"2",  title:"Red Dead Redemption 2",           description:"Sweeping western epic following outlaw Arthur Morgan.",          price:"Rs 3999.00", imageUrl:"Assests/rdr 2.png" },
+        { game_id:"3",  title:"GTA Online",                      description:"Multiplayer mayhem in the ever-evolving GTA V world.",           price:"Free with GTA V", imageUrl:"Assests/gta online.png" },
+        { game_id:"4",  title:"Grand Theft Auto IV",              description:"Niko Bellic's gritty pursuit of the American Dream.",           price:"Rs 1999.00", imageUrl:"Assests/gta iv.jpg" },
+        { game_id:"5",  title:"GTA: San Andreas",                 description:"CJ fights to reclaim his hood across a vast state.",            price:"Rs 1499.00", imageUrl:"Assests/gta sanAndreas.webp" },
+        { game_id:"6",  title:"Grand Theft Auto: Vice City",      description:"Rise to power in neon-soaked 1980s Miami.",                      price:"Rs 1299.00", imageUrl:"Assests/gta vice city.jpg" },
+        { game_id:"7",  title:"Grand Theft Auto III",             description:"The open-world pioneer that changed gaming forever.",           price:"Rs 999.00",  imageUrl:"Assests/gta 3.jpg" },
+        { game_id:"8",  title:"Red Dead Redemption",              description:"John Marston rides through the dying Wild West.",                price:"Rs 2499.00", imageUrl:"Assests/rdr1.jpg" },
+        { game_id:"9",  title:"L.A. Noire",                       description:"Investigate crime scenes in 1940s Los Angeles.",                price:"Rs 1499.00", imageUrl:"Assests/La Noire.png" },
+        { game_id:"10", title:"Bully: Scholarship Edition",       description:"Navigate the social chaos of Bullworth Academy.",              price:"Rs 999.00",  imageUrl:"Assests/bullyScolership.png" },
+        { game_id:"11", title:"Max Payne 3",                      description:"Bullet-time noir shooter in São Paulo's underworld.",          price:"Rs 1999.00", imageUrl:"Assests/max pain 3.webp" },
+        { game_id:"12", title:"Max Payne 2",                      description:"A film noir love story soaked in slow-motion gunplay.",        price:"Rs 999.00",  imageUrl:"Assests/Maxpain 2.png" },
+        { game_id:"13", title:"Manhunt",                          description:"Brutal stealth horror — survive or be hunted.",                 price:"Rs 799.00",  imageUrl:"Assests/manhunt.png" },
+        { game_id:"14", title:"The Warriors",                     description:"Fight your way home across a hostile New York City.",          price:"Rs 899.00",  imageUrl:"Assests/Tha warriors.webp" },
+        { game_id:"15", title:"Midnight Club: Los Angeles",       description:"Underground street racing through a sprawling LA.",            price:"Rs 899.00",  imageUrl:"Assests/Midnight Club-Los_Angeles.jpg" },
+        { game_id:"16", title:"GTA: Chinatown Wars",              description:"Top-down crime chaos on handheld devices.",                    price:"Rs 699.00",  imageUrl:"Assests/ChinatownWars.jpg" },
+        { game_id:"17", title:"Rockstar Games: Table Tennis",     description:"Surprisingly deep and realistic ping-pong simulation.",       price:"Rs 499.00",  imageUrl:"Assests/rockstartable tennis.jpg" },
+        { game_id:"18", title:"GTA: Liberty City Stories",        description:"Tony Cipriani's story — a PSP prequel to GTA III.",           price:"Rs 899.00",  imageUrl:"Assests/gta libertycitystories.png" },
+        { game_id:"19", title:"GTA: Vice City Stories",           description:"Vic Vance's rise in Vice City, before Tommy Vercetti.",       price:"Rs 999.00",  imageUrl:"Assests/gta vice city stories.jpg" },
+        { game_id:"20", title:"Manhunt 2",                        description:"The controversial and banned psychological horror sequel.",    price:"Rs 799.00",  imageUrl:"Assests/Manhunt 2.jpg" }
+    ];
+
+    function buildCard(game) {
+        const card = document.createElement("div");
+        card.className = "game-card";
+        const imgSrc = (game.imageUrl && game.imageUrl.trim() !== "") ? game.imageUrl : "https://placehold.co/180x200/1a1a1a/555?text=Missing+Asset";
+        const desc = game.description.length > 70 ? game.description.substring(0, 70) + "…" : game.description;
+
+        card.innerHTML = `
+        <img src="${imgSrc}" alt="${game.title}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/180x200/1a1a1a/555?text=Error';" />
+        <div class="game-info">
+          <h3>${game.title}</h3>
+          <p class="description">${desc}</p>
+          <p class="price">${game.price}</p>
+        </div>`;
+        return card;
+    }
+
+    function renderGames(games) {
+        const gallery = document.getElementById("gallery");
+        gallery.innerHTML = "";
+        games.forEach(game => gallery.appendChild(buildCard(game)));
+    }
+
+    async function loadGames() {
+        const statusBar = document.getElementById("status-bar");
+        statusBar.textContent = "Connecting to backend…";
+        let extraGames = [];
+        try {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 3000);
+            const res = await fetch(`${API_BASE}/all`, { signal: controller.signal });
+            clearTimeout(timeout);
+            if (res.ok) {
+                extraGames = await res.json();
+                statusBar.textContent = `Connected — Total ${rockstarGames.length + extraGames.length} games`;
+            } else {
+                statusBar.textContent = "Showing built-in games";
+            }
+        } catch {
+            statusBar.textContent = "Offline Mode — Showing built-in games";
+        }
+        const merged = new Map();
+        rockstarGames.forEach(g => merged.set(String(g.game_id), g));
+        extraGames.forEach(g => merged.set(String(g.game_id), g));
+        renderGames([...merged.values()]);
+    }
+
+    document.getElementById("gameForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById("message");
+        const game = {
+            game_id:     document.getElementById("game_id").value.trim(),
+            title:       document.getElementById("title").value.trim(),
+            description: document.getElementById("description").value.trim(),
+            price:       document.getElementById("price").value.trim(),
+            imageUrl:    document.getElementById("imageUrl").value.trim() || null
+        };
+        try {
+            const res = await fetch(API_BASE, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(game)
+            });
+            if (!res.ok) throw new Error(await res.text());
+            msg.textContent = "✔ Game added!";
+            msg.className = "message success";
+            e.target.reset();
+            loadGames();
+        } catch (err) {
+            msg.textContent = "✖ Backend Offline: Local refresh only.";
+            msg.className = "message error";
+            // Local fallback for demo
+            rockstarGames.push(game);
+            loadGames();
+        }
+    });
+
+    loadGames();
+</script>
 
 </body>
 </html>

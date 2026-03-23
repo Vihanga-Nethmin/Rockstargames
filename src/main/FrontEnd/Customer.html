@@ -3,161 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RockStarGames | Create Account</title>
+    <title>Rockstar Nexus | Customer Registration</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700&display=swap');
+
         :root {
-            /* Brand Color: Amber/Gold */
-            --brand-main: rgba(255, 171, 0, 1);
-            /* Requested Highlight Color */
+            --brand-main: #FFAB00;
             --brand-glow: rgba(255, 171, 0, 0.15);
-            --dark-bg: #0b0b0b;
+            --bg: #050505;
             --card-bg: #000000;
-            --input-bg: #151515;
-            --text-gray: #a0a0a0;
+            --border: #222;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background-color: var(--dark-bg);
+            font-family: 'Barlow', sans-serif;
+            background: var(--bg);
             color: #ffffff;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
-            padding: 20px;
         }
 
-        .container {
-            background-color: var(--card-bg);
+        /* Background Video */
+        .video-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            object-fit: cover;
+            opacity: 0.2;
+        }
+
+        .customer-container {
+            background: var(--card-bg);
             padding: 40px;
-            border-radius: 4px;
             width: 100%;
-            max-width: 450px;
-            border: 1px solid #222;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 400px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            position: relative;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 35px;
+        /* Top Accent Line */
+        .customer-container::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--brand-main);
         }
 
-        .logo {
-            font-size: 2.2rem;
-            font-weight: 900;
+        .customer-container h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
             color: var(--brand-main);
-            letter-spacing: -1px;
-            text-transform: uppercase;
-            margin: 0;
-        }
-
-        .subtitle {
-            color: var(--text-gray);
-            font-size: 0.9rem;
-            margin-top: 10px;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-align: center;
         }
 
         .form-group {
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
             font-size: 0.75rem;
             text-transform: uppercase;
-            color: var(--text-gray);
+            color: #888;
+            margin-bottom: 8px;
             letter-spacing: 1px;
+            font-weight: bold;
         }
 
         input {
             width: 100%;
-            padding: 14px;
-            box-sizing: border-box;
-            background-color: var(--input-bg);
+            padding: 15px;
+            background: #111;
             border: 1px solid #333;
-            border-radius: 2px;
             color: white;
             font-size: 1rem;
-            transition: all 0.2s ease;
+            border-radius: 2px;
+            transition: 0.3s;
         }
 
-        /* Using your requested color for the focus state */
         input:focus {
             outline: none;
             border-color: var(--brand-main);
-            background-color: var(--brand-glow);
+            background: var(--brand-glow);
         }
 
         .btn-submit {
             width: 100%;
-            padding: 16px;
-            background-color: var(--brand-main);
+            padding: 18px;
+            background: var(--brand-main);
             color: #000;
             border: none;
-            border-radius: 2px;
-            font-weight: 900;
-            font-size: 1rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
             cursor: pointer;
-            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.2s;
             margin-top: 10px;
-            transition: transform 0.1s;
         }
 
         .btn-submit:hover {
             filter: brightness(1.1);
+            transform: translateY(-2px);
         }
 
-        .btn-submit:active {
-            transform: scale(0.98);
-        }
+        .btn-submit:active { transform: translateY(0); }
 
         .footer-note {
             margin-top: 25px;
             text-align: center;
-            font-size: 0.8rem;
-            color: #555;
+            font-size: 0.7rem;
+            color: #444;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h1 class="logo">RockStarGames</h1>
-        <p class="subtitle">Join the community</p>
-    </div>
+<video autoplay muted loop class="video-bg">
+    <source src="Assests/video.mp4" type="video/mp4">
+</video>
 
-    <form action="/register" method="POST">
+<div class="customer-container">
+    <h1>Join the Nexus</h1>
+
+    <form id="customerForm">
         <div class="form-group">
             <label for="customer_id">Customer ID</label>
-            <input type="text" id="customer_id" name="customer_id" required placeholder="e.g. USER_12345">
+            <input type="text" id="customer_id" required placeholder="e.g. CUST_001">
         </div>
 
         <div class="form-group">
             <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" required placeholder="John Marston">
+            <input type="text" id="name" required placeholder="e.g. Jason Vercetti">
         </div>
 
         <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required placeholder="name@domain.com">
+            <input type="email" id="email" required placeholder="name@example.com">
         </div>
 
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" required placeholder="••••••••">
+            <input type="password" id="password" required placeholder="••••••••">
         </div>
 
-        <button type="submit" class="btn-submit">Register Account</button>
+        <button type="button" class="btn-submit" onclick="addCustomer()">Register Customer</button>
     </form>
 
     <div class="footer-note">
-        By registering, you agree to the RockStarGames Terms of Service.
+        Rockstar Nexus | Database Integrated
     </div>
 </div>
 
+<script>
+    async function addCustomer() {
+        // Collect data according to your Customer table screenshot
+        const customerData = {
+            customer_id: document.getElementById('customer_id').value,
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value
+        };
+
+        // Basic validation
+        if(!customerData.customer_id || !customerData.name || !customerData.email || !customerData.password) {
+            alert("Fill all fields machan!");
+            return;
+        }
+
+        console.log("Customer Object Ready:", customerData);
+
+        // API Connection (Backend එකට data යවන්න)
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/customer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(customerData)
+            });
+
+            if(response.ok) {
+                alert("Customer " + customerData.name + " added successfully!");
+                document.getElementById('customerForm').reset();
+            } else {
+                alert("Server error! Check if your backend is running.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Failed to connect to server. Check your API URL.");
+        }
+    }
+</script>
 </body>
 </html>
