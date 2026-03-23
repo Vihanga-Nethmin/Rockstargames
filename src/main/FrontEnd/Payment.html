@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rockstar Nexus | Payment</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;700&display=swap');
 
@@ -85,21 +86,12 @@
 <div class="payment-card">
     <h1>Payment Details</h1>
     <form id="paymentForm">
-        <div class="form-group">
-            <label>Payment ID</label>
-            <input type="text" id="payment_id" required>
-        </div>
+        <input type="hidden" id="selected_game_id" value="G-001">
+        <input type="hidden" id="order_price" value="Rs 2500.00">
+
         <div class="form-group">
             <label>Order ID</label>
-            <input type="text" id="order_id" required>
-        </div>
-        <div class="form-group">
-            <label>Transaction ID</label>
-            <input type="text" id="transaction_id" required>
-        </div>
-        <div class="form-group">
-            <label>Payment Date</label>
-            <input type="date" id="payment_date" required>
+            <input type="text" id="order_id" placeholder="ORD-XXXX" required>
         </div>
         <div class="form-group">
             <label>Payment Method</label>
@@ -109,31 +101,63 @@
                 <option value="Crypto">Crypto</option>
             </select>
         </div>
-        <div class="form-group">
-            <label>Payment Status</label>
-            <select id="payment_status">
-                <option value="Pending">Pending</option>
-                <option value="Completed">Completed</option>
-            </select>
-        </div>
-        <button type="button" class="btn-pay" onclick="addPayment()">Confirm Payment</button>
+        <button type="button" class="btn-pay" onclick="executeTransaction()">Confirm Payment</button>
     </form>
 </div>
 
 <script>
-    function addPayment() {
-        const paymentData = {
-            payment_id: document.getElementById('payment_id').value,
-            order_id: document.getElementById('order_id').value,
-            payment_date: document.getElementById('payment_date').value,
-            payment_method: document.getElementById('payment_method').value,
-            payment_status: document.getElementById('payment_status').value,
-            transaction_id: document.getElementById('transaction_id').value
+    async function executeTransaction() {
+        // Form එකේ තියෙන data ටික ගන්නවා
+        const orderId = $('#order_id').val();
+
+        if(!orderId) {
+            alert("Please enter an Order ID!");
+            return;
+        }
+
+        const orderData = {
+            order_id: orderId,
+            game_id: $('#selected_game_id').val(),
+            price: $('#order_price').val()
         };
 
-        console.log("Payment Ready:", paymentData);
-        alert("Payment Data Collected for " + paymentData.payment_id);
-        // Manage your backend logic here
+        const paymentData = {
+            payment_id: 'PAY-' + Math.floor(Math.random() * 10000),
+            order_id: orderId,
+            payment_date: new Date().toISOString().split('T')[0],
+            payment_method: $('#payment_method').val(),
+            payment_status: "COMPLETED",
+            transaction_id: 'TXN_' + Math.random().toString(36).substr(2, 9).toUpperCase()
+        };
+
+        console.log("Sending Order:", orderData);
+        console.log("Sending Payment:", paymentData);
+
+        try {
+            // STEP 1: Order එක Save කරනවා
+            await $.ajax({
+                url: 'http://localhost:8080/api/v1/order',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(orderData)
+            });
+
+            // STEP 2: Payment එක Save කරනවා
+            await $.ajax({
+                url: 'http://localhost:8080/api/v1/payment',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(paymentData)
+            });
+
+            alert("SUCCESS! Payment Confirmed. Redirecting...");
+            console.log("Redirecting to Dashboard.html...");
+            window.location.replace("Dashboard.html");
+
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Backend Connection Error! Dashboard එකට යන්න බැරි වුණා.");
+        }
     }
 </script>
 </body>

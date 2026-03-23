@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rockstar Nexus | Customer Registration</title>
+    <title>Rockstar Nexus | Customer Terminal</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700&display=swap');
 
         :root {
-            --brand-main: #FFAB00;
-            --brand-glow: rgba(255, 171, 0, 0.15);
+            --accent: #FFAB00;
             --bg: #050505;
-            --card-bg: #000000;
+            --card-bg: #000;
             --border: #222;
         }
 
@@ -20,109 +19,113 @@
         body {
             font-family: 'Barlow', sans-serif;
             background: var(--bg);
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            color: white;
+            padding: 40px 20px;
         }
 
-        /* Background Video */
         .video-bg {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            object-fit: cover;
-            opacity: 0.2;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; object-fit: cover; opacity: 0.15;
         }
 
-        .customer-container {
-            background: var(--card-bg);
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid var(--border);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-            position: relative;
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
-        /* Top Accent Line */
-        .customer-container::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: var(--brand-main);
-        }
-
-        .customer-container h1 {
+        h1 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.5rem;
-            color: var(--brand-main);
-            margin-bottom: 30px;
-            letter-spacing: 2px;
+            font-size: 3.5rem;
+            color: var(--accent);
             text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
+        .form-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+            border-top: 4px solid var(--accent);
         }
+
+        .form-group { display: flex; flex-direction: column; }
 
         label {
-            display: block;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             color: #888;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
+            margin-bottom: 5px;
             font-weight: bold;
         }
 
         input {
-            width: 100%;
-            padding: 15px;
+            padding: 12px;
             background: #111;
             border: 1px solid #333;
             color: white;
             font-size: 1rem;
             border-radius: 2px;
-            transition: 0.3s;
         }
 
-        input:focus {
-            outline: none;
-            border-color: var(--brand-main);
-            background: var(--brand-glow);
-        }
+        input:focus { outline: none; border-color: var(--accent); }
 
-        .btn-submit {
-            width: 100%;
-            padding: 18px;
-            background: var(--brand-main);
-            color: #000;
-            border: none;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.4rem;
-            cursor: pointer;
-            letter-spacing: 1px;
-            transition: 0.2s;
+        .button-row {
+            grid-column: span 2;
+            display: flex;
+            gap: 10px;
             margin-top: 10px;
         }
 
-        .btn-submit:hover {
-            filter: brightness(1.1);
-            transform: translateY(-2px);
+        .btn {
+            flex: 1;
+            padding: 15px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
         }
 
-        .btn-submit:active { transform: translateY(0); }
+        .btn-save { background: var(--accent); color: #000; }
+        .btn-update { background: #2980b9; color: #fff; }
+        .btn-delete { background: #c0392b; color: #fff; }
+        .btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
-        .footer-note {
-            margin-top: 25px;
-            text-align: center;
-            font-size: 0.7rem;
-            color: #444;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0,0,0,0.6);
+            margin-top: 20px;
+        }
+
+        th {
+            background: #111;
+            color: var(--accent);
+            font-family: 'Bebas Neue';
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #222;
+            font-size: 0.9rem;
+        }
+
+        .btn-select {
+            background: #333;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
         }
     </style>
 </head>
@@ -132,77 +135,169 @@
     <source src="Assests/video.mp4" type="video/mp4">
 </video>
 
-<div class="customer-container">
-    <h1>Join the Nexus</h1>
+<div class="container">
+    <h1>Customer Terminal</h1>
 
-    <form id="customerForm">
+    <div class="form-section">
         <div class="form-group">
-            <label for="customer_id">Customer ID</label>
-            <input type="text" id="customer_id" required placeholder="e.g. CUST_001">
+            <label>Customer ID</label>
+            <input type="text" id="cid" placeholder="CUST-001">
+        </div>
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="name" placeholder="Jason Vercetti">
+        </div>
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="email" placeholder="jason@nexus.com" style="padding: 12px; background: #111; border: 1px solid #333; color: white;">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="••••••••" style="padding: 12px; background: #111; border: 1px solid #333; color: white;">
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+            <label>Address</label>
+            <input type="text" id="address" placeholder="123 Ocean View, Vice City">
         </div>
 
-        <div class="form-group">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" required placeholder="e.g. Jason Vercetti">
+        <div class="button-row">
+            <button class="btn btn-save" onclick="savecustomer()">Deploy Customer</button>
+            <button class="btn btn-update" onclick="updatecustomer()">Update Data</button>
+            <button class="btn btn-delete" onclick="deletecustomer()">Terminate Access</button>
         </div>
-
-        <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" required placeholder="name@example.com">
+        <div class="switch-link" style="text-align: center; margin-top: 15px; font-size: 0.8rem; color: #666;">
+            Already a member? <a href="Login.html" style="color: var(--accent); text-decoration: none;">Login Now</a>
         </div>
-
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" required placeholder="••••••••">
-        </div>
-
-        <button type="button" class="btn-submit" onclick="addCustomer()">Register Customer</button>
-    </form>
-
-    <div class="footer-note">
-        Rockstar Nexus | Database Integrated
     </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="tablerow"></tbody>
+    </table>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 <script>
-    async function addCustomer() {
-        // Collect data according to your Customer table screenshot
-        const customerData = {
-            customer_id: document.getElementById('customer_id').value,
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            password: document.getElementById('password').value
+    const baseUrl = "http://localhost:8080/api/v1/customer";
+
+    function savecustomer() {
+        let customerObj = {
+            customer_id: $('#cid').val(),
+            name: $('#name').val(),
+            email: $('#email').val(),
+            password: $('#password').val(),
+            address: $('#address').val()
         };
 
-        // Basic validation
-        if(!customerData.customer_id || !customerData.name || !customerData.email || !customerData.password) {
-            alert("Fill all fields machan!");
-            return;
-        }
-
-        console.log("Customer Object Ready:", customerData);
-
-        // API Connection (Backend එකට data යවන්න)
-        try {
-            const response = await fetch('http://localhost:8080/api/v1/customer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(customerData)
-            });
-
-            if(response.ok) {
-                alert("Customer " + customerData.name + " added successfully!");
-                document.getElementById('customerForm').reset();
-            } else {
-                alert("Server error! Check if your backend is running.");
+        $.ajax({
+            url: baseUrl,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(customerObj),
+            success: function (res) {
+                alert('Success: Customer Synced with Nexus!');
+                clearFields();
+                getAll();
+                // මචං මේක තමයි ඔයා ඉල්ලපු navigate වෙන කෑල්ල
+                window.location.href = 'Game.html';
+            },
+            error: function (err) {
+                alert('Error: Registration Failed!');
+                console.log(err);
             }
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Failed to connect to server. Check your API URL.");
-        }
+        });
     }
+
+    function updatecustomer() {
+        let customerObj = {
+            customer_id: $('#cid').val(),
+            name: $('#name').val(),
+            email: $('#email').val(),
+            password: $('#password').val(),
+            address: $('#address').val()
+        };
+
+        $.ajax({
+            url: baseUrl,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(customerObj),
+            success: function (res) {
+                alert('Customer Intel Updated!');
+                clearFields();
+                getAll();
+            },
+            error: function (err) {
+                alert('Error: Update Failed!');
+            }
+        });
+    }
+
+    function deletecustomer() {
+        let id = $('#cid').val();
+        if(!id) { alert("Need ID to terminate!"); return; }
+
+        $.ajax({
+            url: baseUrl + '/' + id,
+            method: 'DELETE',
+            success: function (res) {
+                alert('Access Terminated!');
+                clearFields();
+                getAll();
+            },
+            error: function (err) {
+                alert('Error: Deletion Failed!');
+            }
+        });
+    }
+
+    function getAll() {
+        $.ajax({
+            url: baseUrl + "/all",
+            method: 'GET',
+            success: function (res) {
+                $('#tablerow').empty();
+                res.forEach(c => {
+                    const row = `<tr>
+                        <td>${c.customer_id}</td>
+                        <td>${c.name}</td>
+                        <td>${c.email}</td>
+                        <td>${c.address}</td>
+                        <td><button class="btn-select" onclick="selectCustomer('${c.customer_id}','${c.name}','${c.email}','${c.address}')">SELECT</button></td>
+                    </tr>`;
+                    $('#tablerow').append(row);
+                });
+            },
+            error: function (err) {
+                console.log("Failed to load records.");
+            }
+        });
+    }
+
+    function selectCustomer(id, name, email, address) {
+        $('#cid').val(id);
+        $('#name').val(name);
+        $('#email').val(email);
+        $('#address').val(address);
+    }
+
+    function clearFields() {
+        $('input').val('');
+    }
+
+    $(document).ready(function () {
+        getAll();
+    });
 </script>
+
 </body>
 </html>
