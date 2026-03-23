@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Rockstar Nexus | Premium Game Store</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700&display=swap');
+
+        :root {
+            --bg: #050505;
+            --card-bg: #111111;
+            --text: #ffffff;
+            --accent: #FFAB00;
+            --border: #222;
+            --hover-glow: rgba(255, 171, 0, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* --- Animations --- */
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 20px rgba(255, 171, 0, 0.6); }
+            50% { text-shadow: 0 0 45px rgba(255, 171, 0, 0.9); }
+            100% { text-shadow: 0 0 20px rgba(255, 171, 0, 0.6); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Navigation --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            height: 60px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+        }
+
+        .nav-links { display: flex; gap: 25px; list-style: none; }
+        .nav-links a {
+            text-decoration: none;
+            color: #eee;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* --- Hero Image Section --- */
+        .hero-wrapper {
+            overflow: hidden;
+            position: relative;
+            height: 100vh;
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), var(--bg)),
+            url('Assests/Jason_and_Lucia_01_With_Logos_landscape.webp');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            transition: transform 0.1s ease-out;
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 9rem;
+            color: var(--accent);
+            line-height: 0.9;
+            margin-top: 40px;
+            animation: titleGlow 3s infinite ease-in-out;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Video Section (New) --- */
+        .video-section {
+            width: 100%;
+            height: 80vh;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-section video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+        }
+
+        .video-overlay-text {
+            position: absolute;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .video-overlay-text h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            color: var(--text);
+            letter-spacing: 5px;
+            text-shadow: 0 0 20px #000;
+        }
+
+        /* --- Full Width Search Bar (Below Video) --- */
+        .search-outer {
+            width: 100%;
+            padding: 40px 0;
+            background: var(--bg);
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-container {
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 25px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            background: #0a0a0a;
+            color: white;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            transition: 0.4s;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: #111;
+            box-shadow: 0 0 20px var(--hover-glow);
+        }
+
+        /* --- Gallery & Grid --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px 100px; }
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            margin: 50px 0;
+            color: white;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .game-card {
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(255, 171, 0, 0.2);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            filter: grayscale(40%);
+            transition: 0.5s;
+        }
+
+        .game-card:hover img { filter: grayscale(0%); transform: scale(1.1); }
+
+        .game-info { padding: 25px; background: #0a0a0a; border-top: 2px solid var(--accent); }
+        .game-info h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 1px; margin-bottom: 5px; color: #fff; }
+        .game-info .price { color: var(--accent); font-weight: bold; font-size: 1.4rem; font-family: 'Bebas Neue'; }
+
+        /* --- Form Section --- */
+        .add-game-section { padding: 100px 20px; background: #030303; }
+        .add-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #0a0a0a;
+            padding: 50px;
+            border-right: 5px solid var(--accent);
+        }
+        .add-form h2 { font-family: 'Bebas Neue', sans-serif; color: var(--accent); font-size: 3rem; margin-bottom: 30px; text-align: center; }
+        .add-form input, .add-form textarea {
+            width: 100%; padding: 18px; background: #000; border: 1px solid #333; color: white; margin-bottom: 20px;
+        }
+        .add-form button {
+            width: 100%; padding: 20px; background: var(--accent); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; border: none; cursor: pointer; transition: 0.4s;
+        }
+        .add-form button:hover { background: #fff; transform: skewX(-2deg); }
+
+        footer { text-align: center; padding: 60px; color: #444; border-top: 1px solid #111; font-size: 0.8rem; letter-spacing: 3px; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 4rem; }
+            .section-title { font-size: 3rem; }
+            .video-overlay-text h2 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">ROCKSTAR NEXUS</div>
+    <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="Game.html">Store</a></li>
+        <li><a href="#sell">Sell</a></li>
+        <li><a href="#">Support</a></li>
+    </ul>
+</nav>
+
+<div class="hero-wrapper">
+    <header class="hero" id="heroImage">
+        <div class="reveal" id="heroContent">
+            <p>Welcome to the Underground</p>
+            <h1>ULTIMATE GAMING</h1>
+            <a href="#store" class="btn-main" style="padding: 15px 45px; background: var(--accent); color: #000; text-decoration: none; font-family: 'Bebas Neue'; font-size: 1.6rem; letter-spacing: 2px; display: inline-block; margin-top: 20px;">Browse Store</a>
+        </div>
+    </header>
+</div>
+
+<section class="video-section">
+    <video autoplay muted loop playsinline>
+        <source src="Assests/Grand Theft Auto VI .mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="video-overlay-text reveal">
+
+    </div>
+</section>
+
+<div class="search-outer">
+    <div class="search-container reveal">
+        <input type="text" id="searchInput" placeholder="SEARCH FOR A LEGENDARY TITLE..." onkeyup="filterGames()">
+    </div>
+</div>
+
+<div class="container" id="store">
+    <h2 class="section-title reveal">Current Stock</h2>
+    <section class="gallery" id="gallery"></section>
+</div>
+
+<section class="add-game-section" id="sell">
+    <div class="add-form reveal">
+        <h2>List Your Title</h2>
+        <form id="gameForm">
+            <input type="text" id="game_id" required placeholder="GAME ID">
+            <input type="text" id="title" required placeholder="GAME TITLE">
+            <textarea id="description" required placeholder="GAME DESCRIPTION"></textarea>
+            <input type="text" id="price" required placeholder="PRICE (RS 0.00)">
+            <input type="text" id="imageUrl" placeholder="IMAGE PATH (Assests/...)">
+            <button type="submit">Deploy to Store</button>
+        </form>
+    </div>
+</section>
+
+<footer>
+    &copy; 2026 ROCKSTAR NEXUS | DESIGNED FOR THE ELITE
+</footer>
+
+<script>
+    const API_BASE = "http://localhost:8080/api/v1/Game";
+    let allGames = [];
+
+    // --- Smooth Transitions & Reveal Logic ---
+    window.addEventListener('scroll', () => {
+        // Hero Zoom Effect
+        const scroll = window.pageYOffset;
+        document.getElementById('heroImage').style.transform = `scale(${1 + scroll/10000})`;
+
+        // Reveal animations
+        const reveals = document.querySelectorAll('.reveal');
+        reveals.forEach(r => {
+            const windowHeight = window.innerHeight;
+            const revealTop = r.getBoundingClientRect().top;
+            if(revealTop < windowHeight - 100) {
+                r.classList.add('active');
+            }
+        });
+    });
+
+    window.onload = () => {
+        setTimeout(() => {
+            document.getElementById('heroContent').classList.add('active');
+        }, 300);
+        loadGames();
+    };
+
+    // --- Store Logic ---
+    const rockstarGames = [
+        { game_id:"1",  title:"Grand Theft Auto V", description:"The ultimate heist.", price:"Rs 2999.00", imageUrl:"Assests/gta v.png" },
+        { game_id:"2",  title:"Red Dead Redemption 2", description:"Outlaws for life.", price:"Rs 3999.00", imageUrl:"Assests/rdr 2.png" },
+        { game_id:"3",  title:"GTA Online", description:"Criminal enterprise.", price:"Free", imageUrl:"Assests/gta online.png" },
+        { game_id:"4",  title:"Grand Theft Auto IV", description:"Liberty City.", price:"Rs 1999.00", imageUrl:"Assests/gta iv.jpg" },
+        { game_id:"5",  title:"GTA: San Andreas", description:"Grove Street.", price:"Rs 1499.00", imageUrl:"Assests/gta sanAndreas.webp" },
+        { game_id:"6",  title:"GTA: Vice City", description:"80s vibes.", price:"Rs 1299.00", imageUrl:"Assests/gta vice city.jpg" }
+    ];
+
+    function buildCard(game) {
+        const div = document.createElement("div");
+        div.className = "game-card reveal";
+        div.innerHTML = `
+            <img src="${game.imageUrl}" alt="${game.title}" onerror="this.src='https://placehold.co/400x500/111/444?text=Rockstar'">
+            <div class="game-info">
+                <h3>${game.title}</h3>
+                <span class="price">${game.price}</span>
+            </div>`;
+        return div;
+    }
+
+    async function loadGames() {
+        let extraGames = [];
+        try {
+            const res = await fetch(`${API_BASE}/all`);
+            if (res.ok) extraGames = await res.json();
+        } catch (e) { console.log("Offline mode"); }
+
+        const merged = new Map();
+        rockstarGames.forEach(g => merged.set(String(g.game_id), g));
+        extraGames.forEach(g => merged.set(String(g.game_id), g));
+        allGames = [...merged.values()];
+        render(allGames);
+    }
+
+    function render(data) {
+        const gallery = document.getElementById("gallery");
+        gallery.innerHTML = "";
+        data.forEach(g => gallery.appendChild(buildCard(g)));
+    }
+
+    function filterGames() {
+        const term = document.getElementById("searchInput").value.toLowerCase();
+        const filtered = allGames.filter(g => g.title.toLowerCase().includes(term));
+        render(filtered);
+    }
+
+    document.getElementById("gameForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const game = {
+            game_id: document.getElementById("game_id").value,
+            title: document.getElementById("title").value,
+            description: document.getElementById("description").value,
+            price: document.getElementById("price").value,
+            imageUrl: document.getElementById("imageUrl").value
+        };
+        try {
+            await fetch(API_BASE, {
+                method: "POST",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify(game)
+            });
+            alert("Success: Title Deployed!");
+            loadGames();
+        } catch (err) {
+            allGames.push(game);
+            render(allGames);
+        }
+    });
+</script>
+</body>
+</html>
