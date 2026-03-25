@@ -2,9 +2,131 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Rockstar Nexus | Library</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;700&display=swap');
+
+        :root {
+            --accent: #FFAB00;
+            --bg: #050505;
+        }
+
+        body { background: var(--bg); color: white; font-family: 'Barlow', sans-serif; margin: 0; }
+
+        /* --- Navigation --- */
+        nav {
+            padding: 15px 5%; background: #000; border-bottom: 1px solid #222;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { font-family: 'Bebas Neue'; color: var(--accent); font-size: 24px; text-decoration: none; letter-spacing: 2px; }
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .logout-btn { color: #666; text-decoration: none; font-size: 0.8rem; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .logout-btn:hover { color: var(--accent); }
+
+        /* --- Header --- */
+        header { padding: 60px 5%; border-bottom: 2px solid var(--accent); background: linear-gradient(to right, #000, #111); }
+        header h1 { font-family: 'Bebas Neue'; font-size: 4rem; margin: 0; letter-spacing: 3px; }
+        header p { color: var(--accent); margin-top: 10px; letter-spacing: 5px; text-transform: uppercase; font-weight: bold; }
+
+        /* --- Grid --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; padding: 40px 5%; }
+        .card { background: #0a0a0a; border: 1px solid #222; padding: 15px; text-align: center; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card:hover { border-color: var(--accent); transform: translateY(-10px); box-shadow: 0 10px 30px rgba(255, 171, 0, 0.1); }
+        .card img { width: 100%; height: 380px; object-fit: cover; border-radius: 2px; filter: grayscale(20%); transition: 0.4s; }
+        .card:hover img { filter: grayscale(0%); }
+        .card h3 { font-family: 'Bebas Neue'; letter-spacing: 1px; margin: 20px 0 15px 0; font-size: 1.5rem; }
+
+        /* --- Launch Button --- */
+        .btn {
+            display: block; background: var(--accent); color: black; padding: 12px;
+            text-decoration: none; font-family: 'Bebas Neue'; font-size: 1.2rem;
+            border: none; cursor: pointer; transition: 0.3s;
+        }
+        .btn:hover { background: #fff; transform: scale(1.05); }
+
+        .empty-msg { grid-column: 1/-1; text-align: center; margin-top: 80px; color: #333; font-family: 'Bebas Neue'; font-size: 3rem; }
+    </style>
 </head>
 <body>
 
+<nav>
+    <a href="index.html" class="logo">ROCKSTAR NEXUS</a>
+    <div class="nav-right">
+        <span id="userBadge" style="color: #eee; font-size: 0.9rem; border-right: 1px solid #333; padding-right: 15px;">GUEST</span>
+        <a onclick="logout()" class="logout-btn">Sign Out</a>
+    </div>
+</nav>
+
+<header>
+    <h1>YOUR GAME VAULT</h1>
+    <p id="vaultStatus">Authorized Access Only</p>
+</header>
+
+<div class="grid" id="libraryGrid">
+    <div class="empty-msg">DECRYPTING DATA...</div>
+</div>
+
+<script>
+    // 1. Get the User ID from localStorage (Saved during login on index.html)
+    // If no one is logged in, it will redirect back to index
+    const customerId = localStorage.getItem("sessionUser");
+
+    if (!customerId) {
+        alert("Session expired. Please log in.");
+        window.location.href = "index.html";
+    }
+
+    async function loadLibrary() {
+        const grid = document.getElementById("libraryGrid");
+        document.getElementById("userBadge").innerText = "OPERATOR: " + customerId;
+
+        try {
+            // 2. Fetch user's library items (Matches your LibraryController @Query fix)
+            const libRes = await fetch(`http://localhost:8080/api/v1/library/customer/${customerId}`);
+            const libraryItems = await libRes.json();
+
+            // 3. Fetch all game details (to get Titles and Images)
+            const gameRes = await fetch(`http://localhost:8080/api/v1/Game`);
+            const allGames = await gameRes.json();
+
+            grid.innerHTML = ""; // Clear loader
+
+            if (libraryItems && libraryItems.length > 0) {
+                document.getElementById("vaultStatus").innerText = libraryItems.length + " TITLES SECURED";
+
+                libraryItems.forEach(item => {
+                    // Match the game_id from library with the ID in game list
+                    const gameData = allGames.find(g => g.game_id === item.game_id);
+
+                    if (gameData) {
+                        grid.innerHTML += `
+                            <div class="card">
+                                <img src="${gameData.imageUrl}" alt="${gameData.title}">
+                                <h3>${gameData.title}</h3>
+                                <button class="btn" onclick="launchGame('${gameData.title}')">LAUNCH TITLE</button>
+                            </div>`;
+                    }
+                });
+            } else {
+                grid.innerHTML = `<div class="empty-msg">VAULT IS EMPTY</div>`;
+            }
+        } catch (err) {
+            console.error("Connection Error:", err);
+            grid.innerHTML = `<div class="empty-msg" style="color: #ff4444;">ENCRYPTION ERROR: SERVER OFFLINE</div>`;
+        }
+    }
+
+    function launchGame(title) {
+        alert("INITIALIZING " + title.toUpperCase() + "...\nPLEASE STAND BY.");
+    }
+
+    function logout() {
+        localStorage.removeItem("sessionUser");
+        window.location.href = "index.html";
+    }
+
+    // Run on load
+    window.onload = loadLibrary;
+</script>
 </body>
 </html>
