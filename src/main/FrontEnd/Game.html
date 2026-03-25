@@ -14,6 +14,7 @@
             --accent: #FFAB00;
             --border: #2a2a2a;
             --hover-border: #FFAB00;
+            --nav-bg: rgba(0, 0, 0, 0.95);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,29 +23,75 @@
             font-family: 'Barlow', sans-serif;
             background: var(--bg);
             color: var(--text);
-            padding: 20px;
             min-height: 100vh;
         }
 
-        header { text-align: center; margin: 20px 0 40px; }
+        /* --- Navigation Bar --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: var(--nav-bg);
+            border-bottom: 2px solid var(--accent);
+            position: sticky;
+            top: 0;
+            z-index: 1001;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(255, 171, 0, 0.5);
+        }
+
+        /* --- Main Content --- */
+        header { text-align: center; margin: 40px 0 40px; }
 
         h1 {
             font-family: 'Bebas Neue', sans-serif;
             color: var(--accent);
-            font-size: 4rem;
+            font-size: 4.5rem;
             letter-spacing: 4px;
             text-transform: uppercase;
-            text-shadow: 0 0 25px rgba(255, 171, 0, 0.5);
+            text-shadow: 0 0 25px rgba(255, 171, 0, 0.3);
         }
 
         .subtitle { color: #666; letter-spacing: 2px; text-transform: uppercase; font-size: 0.9rem; margin-top: 5px; }
+
+        .container {
+            padding: 0 20px 50px;
+        }
 
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 25px;
             max-width: 1600px;
-            margin: 0 auto 50px;
+            margin: 0 auto;
         }
 
         .game-card {
@@ -101,7 +148,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95);
-            z-index: 1000;
+            z-index: 2000;
             justify-content: center; align-items: center;
         }
 
@@ -133,12 +180,23 @@
 </head>
 <body>
 
+<nav>
+    <a href="index.html" class="nav-logo">RS-NEXUS</a>
+    <div class="nav-links">
+        <a href="landing.html">Home</a>
+        <a href="Gallery.html">Gallery</a>
+        <a href="Orders.html">My Orders</a>
+    </div>
+</nav>
+
 <header>
     <h1>Rockstar Nexus</h1>
     <p class="subtitle">Complete Legendary Collection</p>
 </header>
 
-<section class="gallery" id="gallery"></section>
+<div class="container">
+    <section class="gallery" id="gallery"></section>
+</div>
 
 <div id="paymentModal" class="modal">
     <div class="modal-content">
@@ -175,7 +233,6 @@
     const API_ORDER = "http://localhost:8080/api/v1/order";
     const API_PAYMENT = "http://localhost:8080/api/v1/payment";
 
-    // 20 Games List as requested
     const rockstarGames = [
         { game_id:"1",  title:"Grand Theft Auto V", description:"Epic open-world crime adventure set in Los Santos.", price:"Rs 2999.00", imageUrl:"Assests/gta v.png" },
         { game_id:"2",  title:"Red Dead Redemption 2", description:"Sweeping western epic following outlaw Arthur Morgan.", price:"Rs 3999.00", imageUrl:"Assests/rdr 2.png" },
@@ -229,13 +286,7 @@
 
     async function processPayment() {
         const orderId = $("#order_id").val();
-
-        const orderObj = {
-            order_id: orderId,
-            game_id: $("#hidden_game_id").val(),
-            price: $("#disp_price").val()
-        };
-
+        const orderObj = { order_id: orderId, game_id: $("#hidden_game_id").val(), price: $("#disp_price").val() };
         const paymentObj = {
             payment_id: "PAY-" + Math.floor(10000 + Math.random() * 90000),
             order_id: orderId,
@@ -246,23 +297,10 @@
         };
 
         try {
-            await $.ajax({
-                url: API_ORDER,
-                method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(orderObj)
-            });
-
-            await $.ajax({
-                url: API_PAYMENT,
-                method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(paymentObj)
-            });
-
+            await $.ajax({ url: API_ORDER, method: "POST", contentType: "application/json", data: JSON.stringify(orderObj) });
+            await $.ajax({ url: API_PAYMENT, method: "POST", contentType: "application/json", data: JSON.stringify(paymentObj) });
             alert("SUCCESS! Order Recorded.\nTransaction ID: " + paymentObj.transaction_id);
             closeModal();
-
         } catch (err) {
             alert("Connection Error: Is the Rockstar Backend Server running?");
         }
