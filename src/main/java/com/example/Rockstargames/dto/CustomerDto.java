@@ -20,8 +20,7 @@ public class CustomerDto {
     @Pattern(regexp = "[\\p{L} .'-]+$", message = "customer name is Incorrect")
     private String name;
 
-    @Size(min = 10, max = 100, message = "Address must be between 10 and 100 characters")
-    private String address;
+
 
     // Add these two fields (you are sending them in JSON)
     @NotBlank(message = "Email is mandatory")

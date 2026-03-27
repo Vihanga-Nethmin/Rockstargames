@@ -16,7 +16,6 @@ public class GameDto {
     @NotNull(message = "Game Id is mandatory")
     private String game_id;
 
-    // Add these two fields (you are sending them in JSON)
     @NotBlank(message = "Title")
     private String title;
 
