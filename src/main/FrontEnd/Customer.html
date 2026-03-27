@@ -20,13 +20,244 @@
             font-family: 'Barlow', sans-serif;
             background: var(--bg);
             color: white;
-            padding: 40px 20px;
+            min-height: 100vh;
         }
 
         .video-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; object-fit: cover; opacity: 0.15;
+        }
+
+        /* ==============================
+           GUEST SCREEN
+        ============================== */
+        #guestScreen {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .guest-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            color: var(--accent);
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(255,171,0,0.4);
+        }
+
+        .guest-sub {
+            color: #555;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 50px;
+        }
+
+        .guest-card {
+            background: #000;
+            border: 1px solid #1a1a1a;
+            border-top: 4px solid var(--accent);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .guest-card h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--accent);
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .guest-card p {
+            color: #555;
+            font-size: 0.8rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .btn-signup-big {
+            width: 100%;
+            padding: 18px;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-signup-big:hover {
+            background: #fff;
+            transform: translateY(-2px);
+        }
+
+        .guest-login-link {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        .guest-login-link a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .guest-login-link a:hover { text-decoration: underline; }
+
+        /* ==============================
+           SIGN UP MODAL
+        ============================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-box {
+            background: #000;
+            border: 1px solid #2a2a2a;
+            border-top: 4px solid var(--accent);
+            padding: 35px;
+            width: 90%;
+            max-width: 480px;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px; right: 18px;
+            font-size: 1.8rem;
+            color: #555;
+            cursor: pointer;
+            transition: 0.2s;
+            line-height: 1;
+        }
+
+        .modal-close:hover { color: var(--accent); }
+
+        .modal-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .modal-subtitle {
+            color: #555;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+        }
+
+        .modal-field {
+            margin-bottom: 13px;
+        }
+
+        .modal-field label {
+            display: block;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: #666;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .modal-field input {
+            width: 100%;
+            padding: 11px 14px;
+            background: #0d0d0d;
+            border: 1px solid #2a2a2a;
+            color: white;
+            font-size: 0.95rem;
+            border-radius: 2px;
+            transition: 0.2s;
+            box-sizing: border-box;
+        }
+
+        .modal-field input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: #111;
+        }
+
+        .modal-field input::placeholder { color: #3a3a3a; }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 13px;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-register:hover { background: #fff; }
+        .btn-register:disabled { background: #444; color: #888; cursor: not-allowed; transform: none; }
+
+        .msg-box {
+            padding: 11px 14px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            text-align: center;
+            display: none;
+            border-radius: 2px;
+        }
+
+        .msg-success {
+            background: #0d2e0d;
+            border: 1px solid #2e7d2e;
+            color: #4caf50;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .msg-error {
+            background: #2e0d0d;
+            border: 1px solid #7d2e2e;
+            color: #f44336;
+        }
+
+        /* ==============================
+           ADMIN PANEL
+        ============================== */
+        #adminPanel {
+            display: none;
+            padding: 40px 20px;
         }
 
         .container {
@@ -56,7 +287,7 @@
 
         .form-group { display: flex; flex-direction: column; }
 
-        label {
+        .form-group label {
             font-size: 0.7rem;
             text-transform: uppercase;
             color: #888;
@@ -64,16 +295,18 @@
             font-weight: bold;
         }
 
-        input {
+        .form-group input {
             padding: 12px;
             background: #111;
             border: 1px solid #333;
             color: white;
             font-size: 1rem;
             border-radius: 2px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        input:focus { outline: none; border-color: var(--accent); }
+        .form-group input:focus { outline: none; border-color: var(--accent); }
 
         .button-row {
             grid-column: span 2;
@@ -92,10 +325,10 @@
             transition: 0.3s;
         }
 
-        .btn-save { background: var(--accent); color: #000; }
+        .btn-save   { background: var(--accent); color: #000; }
         .btn-update { background: #2980b9; color: #fff; }
         .btn-delete { background: #c0392b; color: #fff; }
-        .btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        .btn:hover  { filter: brightness(1.2); transform: translateY(-2px); }
 
         table {
             width: 100%;
@@ -127,6 +360,16 @@
             cursor: pointer;
             font-size: 0.8rem;
         }
+
+        .switch-link {
+            grid-column: span 2;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .switch-link a { color: var(--accent); text-decoration: none; }
     </style>
 </head>
 <body>
@@ -135,168 +378,325 @@
     <source src="Assests/video.mp4" type="video/mp4">
 </video>
 
-<div class="container">
-    <h1>Customer Terminal</h1>
+<!-- ==============================
+     GUEST SCREEN
+============================== -->
+<div id="guestScreen">
+    <div class="guest-logo">ROCKSTAR NEXUS</div>
+    <p class="guest-sub">The Ultimate Gaming Terminal</p>
 
-    <div class="form-section">
-        <div class="form-group">
-            <label>Customer ID</label>
-            <input type="text" id="cid" placeholder="CUST-001">
-        </div>
-        <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" id="name" placeholder="Jason Vercetti">
-        </div>
-        <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" id="email" placeholder="jason@nexus.com" style="padding: 12px; background: #111; border: 1px solid #333; color: white;">
-        </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="password" placeholder="••••••••" style="padding: 12px; background: #111; border: 1px solid #333; color: white;">
-        </div>
-        <div class="form-group" style="grid-column: span 2;">
-            <label>Address</label>
-            <input type="text" id="address" placeholder="123 Ocean View, Vice City">
-        </div>
-
-        <div class="button-row">
-            <button class="btn btn-save" onclick="savecustomer()">Deploy Customer</button>
-            <button class="btn btn-update" onclick="updatecustomer()">Update Data</button>
-            <button class="btn btn-delete" onclick="deletecustomer()">Terminate Access</button>
-        </div>
-        <div class="switch-link" style="text-align: center; margin-top: 15px; font-size: 0.8rem; color: #666;">
-            Already a member? <a href="Login.html" style="color: var(--accent); text-decoration: none;">Login Now</a>
+    <div class="guest-card">
+        <h2>Join the Nexus</h2>
+        <p>Create your free account to access the full Rockstar game collection and exclusive member benefits.</p>
+        <button class="btn-signup-big" onclick="openSignupModal()">+ Create Account</button>
+        <div class="guest-login-link">
+            Already a member? <a href="Login.html">Login here</a>
         </div>
     </div>
+</div>
 
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody id="tablerow"></tbody>
-    </table>
+<!-- ==============================
+     SIGN UP MODAL
+============================== -->
+<div class="modal-overlay" id="signupModal">
+    <div class="modal-box">
+        <span class="modal-close" onclick="closeSignupModal()">&times;</span>
+
+        <div class="modal-title">Register</div>
+        <div class="modal-subtitle">Create your Nexus account</div>
+
+        <div class="two-col">
+            <div class="modal-field">
+                <label>Customer ID</label>
+                <input type="text" id="reg_cid" placeholder="CUST-001">
+            </div>
+            <div class="modal-field">
+                <label>Full Name</label>
+                <input type="text" id="reg_name" placeholder="Jason Vercetti">
+            </div>
+        </div>
+
+        <div class="modal-field">
+            <label>Username</label>
+            <input type="text" id="reg_username" placeholder="jason_v">
+        </div>
+
+        <div class="modal-field">
+            <label>Email Address</label>
+            <input type="email" id="reg_email" placeholder="jason@nexus.com">
+        </div>
+
+        <div class="modal-field">
+            <label>Password</label>
+            <input type="password" id="reg_password" placeholder="••••••••">
+        </div>
+
+        <div class="modal-field">
+            <label>Address</label>
+            <input type="text" id="reg_address" placeholder="123 Ocean View, Vice City">
+        </div>
+
+        <button class="btn-register" id="registerBtn" onclick="registerCustomer()">
+            Deploy Account
+        </button>
+
+        <div class="msg-box msg-success" id="regSuccess"></div>
+        <div class="msg-box msg-error"   id="regError"></div>
+    </div>
+</div>
+
+<!-- ==============================
+     ADMIN PANEL
+============================== -->
+<div id="adminPanel">
+    <div class="container">
+        <h1>Customer Terminal</h1>
+
+        <div class="form-section">
+            <div class="form-group">
+                <label>Customer ID</label>
+                <input type="text" id="cid" placeholder="CUST-001">
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="name" placeholder="Jason Vercetti">
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" placeholder="jason@nexus.com">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="••••••••">
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Address</label>
+                <input type="text" id="address" placeholder="123 Ocean View, Vice City">
+            </div>
+
+            <div class="button-row">
+                <button class="btn btn-save"   onclick="savecustomer()">Deploy Customer</button>
+                <button class="btn btn-update" onclick="updatecustomer()">Update Data</button>
+                <button class="btn btn-delete" onclick="deletecustomer()">Terminate Access</button>
+            </div>
+            <div class="switch-link">
+                Want to sign out? <a href="#" onclick="logout()">Logout Now</a>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="tablerow"></tbody>
+        </table>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
 <script>
     const baseUrl = "http://localhost:8080/api/v1/customer";
 
-    function savecustomer() {
-        let customerObj = {
-            customer_id: $('#cid').val(),
-            name: $('#name').val(),
-            email: $('#email').val(),
-            password: $('#password').val(),
-            address: $('#address').val()
+    // Inject token into every request automatically (used by admin CRUD)
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            const token = localStorage.getItem('nexus_token');
+            if (token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+            }
+        }
+    });
+
+    // ── PAGE INIT ──────────────────────────────────────────────────────────────
+    $(document).ready(function () {
+        const token = localStorage.getItem('nexus_token');
+        const role  = localStorage.getItem('nexus_role');
+
+        if (token && role === 'ADMIN') {
+            // Logged-in admin: show full CRUD panel
+            $('#adminPanel').show();
+            getAll();
+        } else {
+            // Everyone else (guests, customers): show sign-up screen only
+            $('#guestScreen').css('display', 'flex');
+        }
+    });
+
+    // ── SIGN UP MODAL ──────────────────────────────────────────────────────────
+    function openSignupModal() {
+        $('#regSuccess, #regError').hide();
+        $('#registerBtn').prop('disabled', false).text('Deploy Account');
+        $('#signupModal').css('display', 'flex');
+    }
+
+    function closeSignupModal() {
+        $('#signupModal').hide();
+        $('#reg_cid, #reg_name, #reg_username, #reg_email, #reg_password, #reg_address').val('');
+    }
+
+    // Close modal on backdrop click
+    $('#signupModal').on('click', function(e) {
+        if ($(e.target).is('#signupModal')) closeSignupModal();
+    });
+
+    function registerCustomer() {
+        const cid      = $('#reg_cid').val().trim();
+        const name     = $('#reg_name').val().trim();
+        const username = $('#reg_username').val().trim();
+        const email    = $('#reg_email').val().trim();
+        const password = $('#reg_password').val().trim();
+        const address  = $('#reg_address').val().trim();
+
+        // Validation
+        if (!cid || !name || !username || !email || !password || !address) {
+            showRegMsg('error', 'All fields are required.');
+            return;
+        }
+
+        const customerObj = {
+            customer_id: cid,
+            name:        name,
+            username:    username,
+            email:       email,
+            password:    password,
+            address:     address
         };
 
+        $('#registerBtn').prop('disabled', true).text('Deploying...');
+
+        // Public POST — no Authorization header needed for registration
         $.ajax({
             url: baseUrl,
             method: 'POST',
             contentType: 'application/json',
+            headers: { 'Authorization': '' },   // override global ajaxSetup for this call
             data: JSON.stringify(customerObj),
-            success: function (res) {
-                alert('Success: Customer Synced with Nexus!');
-                clearFields();
-                getAll();
-                // මචං මේක තමයි ඔයා ඉල්ලපු navigate වෙන කෑල්ල
-                window.location.href = 'Game.html';
+            success: function () {
+                showRegMsg('success', 'Account Created! Redirecting to Login...');
+                setTimeout(function () {
+                    closeSignupModal();
+                    window.location.href = 'Login.html';
+                }, 2000);
             },
             error: function (err) {
-                alert('Error: Registration Failed!');
-                console.log(err);
+                $('#registerBtn').prop('disabled', false).text('Deploy Account');
+                if (err.status === 409) {
+                    showRegMsg('error', 'Customer ID or Email already exists.');
+                } else if (err.status === 0) {
+                    showRegMsg('error', 'Cannot reach server. Is Spring Boot running?');
+                } else {
+                    showRegMsg('error', 'Error ' + err.status + ': ' + (err.responseJSON?.message || 'Registration failed.'));
+                }
             }
         });
     }
 
-    function updatecustomer() {
-        let customerObj = {
+    function showRegMsg(type, msg) {
+        if (type === 'success') {
+            $('#regSuccess').text(msg).show();
+            $('#regError').hide();
+        } else {
+            $('#regError').text(msg).show();
+            $('#regSuccess').hide();
+        }
+    }
+
+    // ── ADMIN CRUD ─────────────────────────────────────────────────────────────
+    function savecustomer() {
+        const customerObj = {
             customer_id: $('#cid').val(),
-            name: $('#name').val(),
-            email: $('#email').val(),
-            password: $('#password').val(),
-            address: $('#address').val()
+            name:        $('#name').val(),
+            email:       $('#email').val(),
+            password:    $('#password').val(),
+            address:     $('#address').val()
         };
-
         $.ajax({
-            url: baseUrl,
-            method: 'PUT',
-            contentType: 'application/json',
+            url: baseUrl, method: 'POST', contentType: 'application/json',
             data: JSON.stringify(customerObj),
-            success: function (res) {
-                alert('Customer Intel Updated!');
-                clearFields();
-                getAll();
-            },
-            error: function (err) {
-                alert('Error: Update Failed!');
-            }
-        });
-    }
-
-    function deletecustomer() {
-        let id = $('#cid').val();
-        if(!id) { alert("Need ID to terminate!"); return; }
-
-        $.ajax({
-            url: baseUrl + '/' + id,
-            method: 'DELETE',
-            success: function (res) {
-                alert('Access Terminated!');
-                clearFields();
-                getAll();
-            },
-            error: function (err) {
-                alert('Error: Deletion Failed!');
-            }
+            success: function () { alert('Customer Synced with Nexus!'); clearFields(); getAll(); },
+            error:   function (err) { handleAuthError(err); }
         });
     }
 
     function getAll() {
         $.ajax({
-            url: baseUrl + "/all",
-            method: 'GET',
+            url: baseUrl + "/all", method: 'GET',
             success: function (res) {
                 $('#tablerow').empty();
-                res.forEach(c => {
-                    const row = `<tr>
+                const data = res.data ? res.data : res;
+                data.forEach(c => {
+                    $('#tablerow').append(`<tr>
                         <td>${c.customer_id}</td>
                         <td>${c.name}</td>
                         <td>${c.email}</td>
                         <td>${c.address}</td>
                         <td><button class="btn-select" onclick="selectCustomer('${c.customer_id}','${c.name}','${c.email}','${c.address}')">SELECT</button></td>
-                    </tr>`;
-                    $('#tablerow').append(row);
+                    </tr>`);
                 });
             },
-            error: function (err) {
-                console.log("Failed to load records.");
-            }
+            error: function (err) { handleAuthError(err); }
         });
     }
 
+    function updatecustomer() {
+        const customerObj = {
+            customer_id: $('#cid').val(),
+            name:        $('#name').val(),
+            email:       $('#email').val(),
+            password:    $('#password').val(),
+            address:     $('#address').val()
+        };
+        $.ajax({
+            url: baseUrl, method: 'PUT', contentType: 'application/json',
+            data: JSON.stringify(customerObj),
+            success: function () { alert('Customer Intel Updated!'); clearFields(); getAll(); },
+            error:   function (err) { handleAuthError(err); }
+        });
+    }
+
+    function deletecustomer() {
+        const id = $('#cid').val();
+        if (!id) { alert("Select a customer or enter ID to terminate!"); return; }
+        if (confirm("Terminate this access?")) {
+            $.ajax({
+                url: baseUrl + '/' + id, method: 'DELETE',
+                success: function () { alert('Access Terminated!'); clearFields(); getAll(); },
+                error:   function (err) { handleAuthError(err); }
+            });
+        }
+    }
+
+    // ── UTILITIES ──────────────────────────────────────────────────────────────
+    function handleAuthError(err) {
+        if (err.status === 401 || err.status === 403) {
+            alert("Session Expired. Please Login.");
+            window.location.href = 'Login.html';
+        } else {
+            alert("Action failed! Check console.");
+            console.error(err);
+        }
+    }
+
     function selectCustomer(id, name, email, address) {
-        $('#cid').val(id);
-        $('#name').val(name);
-        $('#email').val(email);
-        $('#address').val(address);
+        $('#cid').val(id); $('#name').val(name);
+        $('#email').val(email); $('#address').val(address);
     }
 
     function clearFields() {
-        $('input').val('');
+        $('#cid, #name, #email, #password, #address').val('');
     }
 
-    $(document).ready(function () {
-        getAll();
-    });
+    function logout() {
+        localStorage.removeItem('nexus_token');
+        localStorage.removeItem('nexus_role');
+        window.location.href = 'Login.html';
+    }
 </script>
 
 </body>
