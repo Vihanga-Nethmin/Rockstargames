@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@IdClass(OrderDetailPK.class) // Composite Key එක මෙතනට ඕනේ
+@IdClass(OrderDetailPK.class)
 public class OrderDetail {
     @Id
     private String order_id;
     @Id
-    private String customer_id; // PK එකට අදාළ field එක
+    private String customer_id;
 
     private String order_date;
     private String total_amount;

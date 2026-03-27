@@ -15,17 +15,22 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<APIResponse<String>> handleGenaralaExceptions(Exception e) {
+        e.printStackTrace();
         return new ResponseEntity<>(new APIResponse<>
                 (HttpStatus.INTERNAL_SERVER_ERROR.value(),"Internal Server Error",null), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<APIResponse<String>> handleNullPointerExceptions(NullPointerException e) {
+        e.printStackTrace();
+
         return new ResponseEntity<>(new APIResponse<>
                 (HttpStatus.INTERNAL_SERVER_ERROR.value(),"Null Values in ServiceImpl",null), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<APIResponse<Object>> handleMethodArgumentNotValidExceptions(MethodArgumentNotValidException e) {
+        e.printStackTrace();
+
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getAllErrors().forEach((error) -> {
             errors.put(error.getDefaultMessage(), error.getDefaultMessage());
