@@ -2,168 +2,109 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rockstar Nexus | Login</title>
+    <title>Rockstar Nexus | Terminal</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700&display=swap');
-
-        :root {
-            --accent: #FFAB00;
-            --bg: #050505;
-            --card-bg: #000;
-            --border: #222;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Barlow', sans-serif;
-            background: var(--bg);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .video-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; object-fit: cover; opacity: 0.15;
-        }
-
-        .login-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            border-top: 4px solid var(--accent);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-        }
-
-        h1 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 3rem;
-            color: var(--accent);
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-        }
-
-        .form-group {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: #888;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 15px;
-            background: #111;
-            border: 1px solid #333;
-            color: white;
-            font-size: 1rem;
-            border-radius: 2px;
-            transition: 0.3s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .btn-login {
-            width: 100%;
-            padding: 18px;
-            background: var(--accent);
-            color: black;
-            border: none;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.5rem;
-            cursor: pointer;
-            letter-spacing: 1px;
-            margin-top: 10px;
-        }
-
-        .btn-login:hover { filter: brightness(1.2); }
-
-        .switch-link {
-            margin-top: 20px;
-            font-size: 0.8rem;
-            color: #666;
-        }
-
-        .switch-link a {
-            color: var(--accent);
-            text-decoration: none;
-        }
+        :root { --accent: #FFAB00; --bg: #050505; }
+        body { background: var(--bg); color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: #000; padding: 40px; border-top: 4px solid var(--accent); width: 350px; text-align: center; }
+        .role-selector { display: flex; margin-bottom: 20px; border: 1px solid #333; }
+        .role-btn { flex: 1; padding: 10px; cursor: pointer; background: #111; color: #555; border: none; }
+        .role-btn.active { background: var(--accent); color: #000; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #111; border: 1px solid #333; color: white; box-sizing: border-box; }
+        .btn-access { width: 100%; padding: 15px; background: var(--accent); border: none; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .error-msg { color: #ff4444; font-size: 0.85rem; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
 
-<video autoplay muted loop class="video-bg">
-    <source src="Assests/video.mp4" type="video/mp4">
-</video>
+<div class="card">
+    <h2 style="color: var(--accent); margin-bottom: 20px;">ROCKSTAR NEXUS</h2>
 
-<div class="login-card">
-    <h1>Member Login</h1>
-    <form id="loginForm">
-        <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" id="loginEmail" required placeholder="name@nexus.com">
-        </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="loginPass" required placeholder="••••••••">
-        </div>
-        <button type="button" class="btn-login" onclick="loginUser()">Access Terminal</button>
-    </form>
-
-    <div class="switch-link">
-        New to the underground? <a href="Customer.html">Register Here</a>
+    <!-- Role selector is UI-only; actual role comes from the JWT -->
+    <div class="role-selector">
+        <button class="role-btn active" onclick="setRole('CUSTOMER', this)">CUSTOMER</button>
+        <button class="role-btn" onclick="setRole('ADMIN', this)">ADMIN</button>
     </div>
+
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="pass" placeholder="Password">
+    <button class="btn-access" onclick="login()">INITIALIZE ACCESS</button>
+    <div class="error-msg" id="errorMsg"></div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
-    const baseUrl = "http://localhost:8080/api/v1/customer/all";
-
-    function loginUser() {
-        let email = $('#loginEmail').val();
-        let pass = $('#loginPass').val();
-
-        if(!email || !pass) {
-            alert("Enter credentials, machan!");
-            return;
+    // ─── SECURITY UTILITY ────────────────────────────────────────────────────
+    // Decode the JWT payload WITHOUT trusting localStorage for role.
+    // The role claim is signed by the Spring Boot server — it cannot be faked.
+    function getRoleFromToken(token) {
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            // Spring Boot usually puts the roles in one of these fields:
+            return (payload.role || payload.roles || payload.authorities || '').toString().toUpperCase();
+        } catch (e) {
+            return '';
         }
+    }
 
-        // Database එකේ ඉන්න ඔක්කොම ලුහුබැඳලා බලනවා (Check all users)
+    let selectedRole = "CUSTOMER"; // UI hint only — we verify from JWT
+
+    function setRole(role, btn) {
+        selectedRole = role;
+        $('.role-btn').removeClass('active');
+        $(btn).addClass('active');
+    }
+
+    function showError(msg) {
+        $('#errorMsg').text(msg).show();
+    }
+
+    function login() {
+        const username = $('#username').val().trim();
+        const pass     = $('#pass').val().trim();
+
+        if (!username || !pass) { showError("Please enter username and password."); return; }
+
         $.ajax({
-            url: baseUrl,
-            method: 'GET',
-            success: function (users) {
-                // Email එකයි Password එකයි දෙකම match වෙන එකෙක් ඉන්නවද බලනවා
-                let user = users.find(u => u.email === email && u.password === pass);
+            url: "http://localhost:8080/api/v1/auth/login",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ username, password: pass }),
+            success: function(res) {
+                if (res.statusCode === 200 || res.data) {
+                    const token = res.data.accessToken || res.data;
 
-                if (user) {
-                    alert("Login Successful! Welcome back, " + user.name);
-                    // Login වුණාම Game page එකට යනවා
-                    window.location.href = 'Game.html';
+                    // ✅ SECURITY FIX: derive role FROM the JWT, not from the UI button
+                    const tokenRole = getRoleFromToken(token);
+
+                    // Reject if the server-side role doesn't match what the user selected
+                    // This prevents a CUSTOMER token being used to reach Admin.html
+                    if (!tokenRole.includes(selectedRole)) {
+                        showError("Access Denied: Your account does not have " + selectedRole + " privileges.");
+                        return;
+                    }
+
+                    // Store only the token — role is always read from token, never stored separately
+                    localStorage.setItem('nexus_token', token);
+
+                    if (tokenRole.includes('ADMIN')) {
+                        window.location.href = "Admin.html";
+                    } else {
+                        window.location.href = "Game.html";
+                    }
+
                 } else {
-                    alert("Invalid Email or Password! Try again.");
+                    showError("Access Denied: " + (res.message || "Invalid credentials"));
                 }
             },
-            error: function (err) {
-                alert("Server connection failed!");
+            error: function(xhr) {
+                if (xhr.status === 401 || xhr.status === 403) {
+                    showError("Wrong username or password.");
+                } else if (xhr.status === 0) {
+                    showError("Cannot reach server. Is Spring Boot running on port 8080?");
+                } else {
+                    showError("Error " + xhr.status + ": " + (xhr.responseJSON?.message || "Unknown error"));
+                }
             }
         });
     }
