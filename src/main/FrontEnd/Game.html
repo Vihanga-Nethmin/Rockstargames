@@ -148,7 +148,48 @@
             margin-top: auto;
         }
 
-        .btn-buy:hover { background: #fff; }
+        .btn-buy.owned {
+            background: #1a1a1a;
+            color: #4CAF50;
+            border: 1px solid #4CAF50;
+            cursor: default;
+        }
+
+        .btn-buy:hover:not(.owned) { background: #fff; }
+
+        /* ── Download Toast ── */
+        #downloadToast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #111;
+            border: 1px solid var(--accent);
+            color: #fff;
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 16px 22px;
+            z-index: 9999;
+            display: none;
+            border-radius: 3px;
+            box-shadow: 0 8px 30px rgba(255,171,0,0.25);
+            max-width: 320px;
+        }
+
+        #downloadToast .toast-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        #downloadToast .toast-file {
+            color: #ccc;
+            font-size: 0.85rem;
+            word-break: break-all;
+        }
 
         .modal {
             display: none;
@@ -208,6 +249,14 @@
             display: none;
             font-size: 0.85rem;
         }
+
+        .download-hint {
+            color: #555;
+            font-size: 0.72rem;
+            text-align: center;
+            margin-top: 8px;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
@@ -217,6 +266,7 @@
     <div class="nav-links">
         <a href="landing.html">Home</a>
         <a href="Gallery.html">Gallery</a>
+        <a href="Community.html">Community</a>
         <button class="btn-logout" onclick="logout()">Logout</button>
     </div>
 </nav>
@@ -234,7 +284,7 @@
 <div id="paymentModal" class="modal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal()">&times;</span>
-        <h2 style="font-family: 'Bebas Neue'; color: var(--accent); text-align: center; margin-bottom: 25px; font-size: 2rem;">Checkout Terminal</h2>
+        <h2 style="font-family:'Bebas Neue';color:var(--accent);text-align:center;margin-bottom:25px;font-size:2rem;">Checkout Terminal</h2>
 
         <div class="form-group">
             <label>Reference Order ID</label>
@@ -244,6 +294,8 @@
             <label>Selected Title</label>
             <input type="text" id="disp_title" readonly>
             <input type="hidden" id="hidden_game_id">
+            <input type="hidden" id="hidden_game_price">
+            <input type="hidden" id="hidden_image_url">
         </div>
         <div class="form-group">
             <label>Price</label>
@@ -258,15 +310,27 @@
             </select>
         </div>
         <button class="btn-pay" onclick="processPayment()">Confirm Transaction</button>
+        <p class="download-hint">⬇ Your game .zip will auto-download after payment</p>
         <div class="success-msg" id="successMsg"></div>
-        <div class="error-msg" id="errorMsg"></div>
+        <div class="error-msg"   id="errorMsg"></div>
     </div>
 </div>
 
+<!-- Download Toast -->
+<div id="downloadToast">
+    <span class="toast-title">📦 Download Started</span>
+    <span class="toast-file" id="toastFileName"></span>
+</div>
+
+<!-- JSZip — generates the .zip entirely in the browser, no server needed -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 <script>
-    const API_ORDER   = "http://localhost:8080/api/v1/order";
-    const API_PAYMENT = "http://localhost:8080/api/v1/payment";
+    // ─── API ENDPOINTS ────────────────────────────────────────────────────────
+    const API_ORDER     = "http://localhost:8080/api/v1/order";
+    const API_PAYMENT   = "http://localhost:8080/api/v1/payment";
+    const API_USER_GAME = "http://localhost:8080/api/v1/user-game";
 
     // ─── JWT UTILITIES ────────────────────────────────────────────────────────
     function getTokenPayload() {
@@ -277,8 +341,6 @@
         } catch (e) { return null; }
     }
 
-    // ✅ FIX: Read role directly from the JWT — NOT from localStorage
-    // nexus_role is never stored in localStorage anymore (Login.html was fixed)
     function getRoleFromToken() {
         const p = getTokenPayload();
         if (!p) return '';
@@ -291,7 +353,6 @@
         return p.sub || p.username || null;
     }
 
-    // Inject token into every AJAX request automatically
     $.ajaxSetup({
         beforeSend: function(xhr) {
             const token = localStorage.getItem('nexus_token');
@@ -302,18 +363,16 @@
     // ─── PAGE INIT ────────────────────────────────────────────────────────────
     $(document).ready(function() {
         const token = localStorage.getItem('nexus_token');
-
-        // ✅ FIX: Check role FROM the JWT payload, not from localStorage
         if (!token || !getRoleFromToken().includes('CUSTOMER')) {
             alert("Unauthorized Access. Customers only.");
             window.location.href = 'Login.html';
             return;
         }
-
         renderGames();
+        markOwnedGames();
     });
 
-    // ─── GAME DATA ────────────────────────────────────────────────────────────
+    // ─── GAME CATALOGUE ───────────────────────────────────────────────────────
     const rockstarGames = [
         { game_id:"1",  title:"Grand Theft Auto V",          description:"Epic open-world crime adventure set in Los Santos.",        price:"Rs 2999.00", imageUrl:"Assests/gta v.png" },
         { game_id:"2",  title:"Red Dead Redemption 2",        description:"Sweeping western epic following outlaw Arthur Morgan.",      price:"Rs 3999.00", imageUrl:"Assests/rdr 2.png" },
@@ -337,20 +396,22 @@
         { game_id:"20", title:"Manhunt 2",                    description:"The controversial and banned psychological horror sequel.", price:"Rs 799.00", imageUrl:"Assests/Manhunt 2.jpg" }
     ];
 
+    let ownedGameIds = new Set();
+
     function renderGames() {
         const gallery = $("#gallery");
         gallery.empty();
         rockstarGames.forEach(game => {
             gallery.append(`
-                <div class="game-card">
+                <div class="game-card" id="card-${game.game_id}">
                     <img src="${game.imageUrl}" alt="${game.title}"
                          onerror="this.src='https://via.placeholder.com/280x350/111/555?text=Nexus+Asset'">
                     <div class="game-info">
                         <h3>${game.title}</h3>
                         <p class="description">${game.description}</p>
                         <p class="price">${game.price}</p>
-                        <button class="btn-buy"
-                            onclick="openCheckout('${game.game_id}', '${game.title}', '${game.price}')">
+                        <button class="btn-buy" id="btn-${game.game_id}"
+                            onclick="openCheckout('${game.game_id}', '${game.title}', '${game.price}', '${game.imageUrl}')">
                             Purchase
                         </button>
                     </div>
@@ -359,10 +420,40 @@
         });
     }
 
+    // ─── MARK OWNED GAMES ─────────────────────────────────────────────────────
+    function markOwnedGames() {
+        const username = getCustomerFromToken();
+        if (!username) return;
+        $.ajax({
+            url: API_USER_GAME + "/my-library",
+            method: "GET",
+            data: { username: username },
+            success: function(res) {
+                if (res.data && Array.isArray(res.data)) {
+                    res.data.forEach(function(item) {
+                        ownedGameIds.add(item.gameId);
+                        markBtnOwned(item.gameId);
+                    });
+                }
+            },
+            error: function(err) {
+                console.warn("Could not load owned games:", err.status);
+            }
+        });
+    }
+
+    function markBtnOwned(gameId) {
+        const btn = $("#btn-" + gameId);
+        btn.text("✔ OWNED").addClass("owned").attr("onclick", "");
+    }
+
     // ─── CHECKOUT ─────────────────────────────────────────────────────────────
-    function openCheckout(id, title, price) {
+    function openCheckout(id, title, price, imageUrl) {
+        if (ownedGameIds.has(id)) return;
         $("#order_id").val("ORD-" + Math.floor(10000 + Math.random() * 90000));
         $("#hidden_game_id").val(id);
+        $("#hidden_game_price").val(price);
+        $("#hidden_image_url").val(imageUrl);
         $("#disp_title").val(title);
         $("#disp_price").val(price);
         $("#successMsg").hide();
@@ -372,6 +463,39 @@
 
     function closeModal() { $("#paymentModal").hide(); }
 
+    // ─── DOWNLOAD GAME AS .ZIP ────────────────────────────────────────────────
+    // Uses JSZip to generate an empty .zip named after the purchased game.
+    // File name format: Grand_Theft_Auto_V.zip
+    async function downloadGameZip(gameTitle) {
+        // Sanitize: remove characters not safe for filenames, collapse spaces
+        const safeName = gameTitle
+            .replace(/[\/\\:*?"<>|]/g, '')   // strip illegal filename chars
+            .replace(/\s+/g, '_');            // spaces → underscores
+
+        const fileName = safeName + ".zip";
+
+        // Build the zip (empty — just a correctly named game file)
+        const zip  = new JSZip();
+        const blob = await zip.generateAsync({ type: "blob" });
+
+        // Trigger browser download
+        const url = URL.createObjectURL(blob);
+        const a   = document.createElement('a');
+        a.href        = url;
+        a.download    = fileName;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        // Show bottom-right toast
+        $("#toastFileName").text(fileName);
+        $("#downloadToast").fadeIn(350);
+        setTimeout(() => $("#downloadToast").fadeOut(600), 4500);
+    }
+
+    // ─── PROCESS PAYMENT + RECORD + DOWNLOAD ─────────────────────────────────
     async function processPayment() {
         const orderId    = $("#order_id").val();
         const customerId = getCustomerFromToken();
@@ -379,11 +503,16 @@
         $("#successMsg").hide();
         $("#errorMsg").hide();
 
+        const gameId    = $("#hidden_game_id").val();
+        const gameTitle = $("#disp_title").val();
+        const gamePrice = $("#hidden_game_price").val();
+        const imageUrl  = $("#hidden_image_url").val();
+
         const orderObj = {
             order_id:    orderId,
-            game_id:     $("#hidden_game_id").val(),
+            game_id:     gameId,
             customer_id: customerId,
-            price:       $("#disp_price").val()
+            price:       gamePrice
         };
 
         const paymentObj = {
@@ -395,7 +524,17 @@
             transaction_id: "TXN-" + Math.random().toString(36).substr(2, 9).toUpperCase()
         };
 
+        const userGameObj = {
+            username:      customerId,
+            gameId:        gameId,
+            gameTitle:     gameTitle,
+            gamePrice:     gamePrice,
+            imageUrl:      imageUrl,
+            purchasedDate: new Date().toISOString().split('T')[0]
+        };
+
         try {
+            // Step 1 — create order record
             await $.ajax({
                 url: API_ORDER,
                 method: "POST",
@@ -403,6 +542,7 @@
                 data: JSON.stringify(orderObj)
             });
 
+            // Step 2 — create payment record
             await $.ajax({
                 url: API_PAYMENT,
                 method: "POST",
@@ -410,11 +550,27 @@
                 data: JSON.stringify(paymentObj)
             });
 
+            // Step 3 — record in user's library
+            await $.ajax({
+                url: API_USER_GAME,
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(userGameObj)
+            });
+
+            // Step 4 — mark card as owned in UI
+            ownedGameIds.add(gameId);
+            markBtnOwned(gameId);
+
+            // Step 5 — success message
             $("#successMsg")
-                .text("SUCCESS! Transaction ID: " + paymentObj.transaction_id)
+                .html("✔ SUCCESS &nbsp;|&nbsp; TXN: " + paymentObj.transaction_id + "<br><small>Your game is downloading...</small>")
                 .show();
 
-            setTimeout(closeModal, 3000);
+            // Step 6 — trigger .zip download named after the game
+            await downloadGameZip(gameTitle);
+
+            setTimeout(closeModal, 3500);
 
         } catch (err) {
             console.error("Payment error:", err);

@@ -68,15 +68,15 @@
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 25px;
+            gap: 20px;
         }
 
-        .nav-links { display: flex; gap: 25px; list-style: none; }
+        .nav-links { display: flex; gap: 20px; list-style: none; }
         .nav-links a {
             text-decoration: none;
             color: #eee;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             letter-spacing: 1px;
             transition: 0.3s;
         }
@@ -127,7 +127,7 @@
 
         .hero h1 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 9rem;
+            font-size: clamp(4rem, 10vw, 9rem);
             color: var(--accent);
             line-height: 0.9;
             margin-top: 40px;
@@ -243,6 +243,7 @@
             padding: 50px;
             border-right: 5px solid var(--accent);
         }
+        .add-form h2 { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; margin-bottom: 20px; }
         .add-form button {
             width: 100%; padding: 20px; background: var(--accent); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; border: none; cursor: pointer; transition: 0.4s;
         }
@@ -250,6 +251,7 @@
         footer { text-align: center; padding: 60px; color: #444; border-top: 1px solid #111; font-size: 0.8rem; letter-spacing: 3px; }
 
         @media (max-width: 768px) {
+            .nav-links { display: none; } /* Consider a burger menu for mobile */
             .hero h1 { font-size: 4rem; }
         }
     </style>
@@ -261,8 +263,9 @@
     <div class="nav-right">
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
-            <li><a href="Gallery.html">Gallery</a></li> <li><a href="Customer.html">Store</a></li>
-            <li><a href="#sell">Sell</a></li>
+            <li><a href="Gallery.html">Gallery</a></li>
+            <li><a href="Customer.html">Store</a></li>
+            <li><a href="community.html">Community</a></li> <li><a href="#sell">Sell</a></li>
             <li><a href="#">Support</a></li>
         </ul>
         <a href="login.html" class="profile-icon-link">
@@ -278,7 +281,7 @@
         <div class="reveal" id="heroContent">
             <p>Welcome to the Underground</p>
             <h1>ULTIMATE GAMING</h1>
-            <a href="customer.html" class="btn-main" style="padding: 15px 45px; background: var(--accent); color: #000; text-decoration: none; font-family: 'Bebas Neue'; font-size: 1.6rem; letter-spacing: 2px; display: inline-block; margin-top: 20px; border-radius: 2px;">Browse Store</a>
+            <a href="Customer.html" class="btn-main" style="padding: 15px 45px; background: var(--accent); color: #000; text-decoration: none; font-family: 'Bebas Neue'; font-size: 1.6rem; letter-spacing: 2px; display: inline-block; margin-top: 20px; border-radius: 2px;">Browse Store</a>
         </div>
     </header>
 </div>
@@ -319,6 +322,7 @@
     const API_BASE = "http://localhost:8080/api/v1/Game";
     let allGames = [];
 
+    // Scroll Reveal Logic
     window.addEventListener('scroll', () => {
         const reveals = document.querySelectorAll('.reveal');
         reveals.forEach(r => {
@@ -337,6 +341,7 @@
         loadGames();
     };
 
+    // Static Data for Demo
     const rockstarGames = [
         { game_id:"1",  title:"Grand Theft Auto V", price:"Rs 2999.00", imageUrl:"Assests/gta v.png" },
         { game_id:"2",  title:"Red Dead Redemption 2", price:"Rs 3999.00", imageUrl:"Assests/rdr 2.png" }
@@ -345,7 +350,7 @@
     function buildCard(game) {
         const div = document.createElement("div");
         div.className = "game-card reveal";
-        div.onclick = () => { window.location.href = "customer.html"; };
+        div.onclick = () => { window.location.href = "Customer.html"; };
         div.style.cursor = "pointer";
         div.innerHTML = `
             <img src="${game.imageUrl}" alt="${game.title}" onerror="this.src='https://placehold.co/400x500/111/444?text=Rockstar'">
@@ -357,6 +362,7 @@
     }
 
     async function loadGames() {
+        // In a real app, you would fetch from API_BASE here
         render(rockstarGames);
     }
 
@@ -364,6 +370,12 @@
         const gallery = document.getElementById("gallery");
         gallery.innerHTML = "";
         data.forEach(g => gallery.appendChild(buildCard(g)));
+    }
+
+    function filterGames() {
+        const query = document.getElementById('searchInput').value.toLowerCase();
+        const filtered = rockstarGames.filter(g => g.title.toLowerCase().includes(query));
+        render(filtered);
     }
 </script>
 </body>
