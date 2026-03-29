@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Rockstar Nexus | Support</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap');
+
+        :root {
+            --bg: #050505;
+            --text: #ffffff;
+            --accent: #FFAB00;
+            --accent-dim: rgba(255, 171, 0, 0.12);
+            --accent-glow: rgba(255, 171, 0, 0.35);
+            --border: #1e1e1e;
+            --card-bg: #0a0a0a;
+            --input-bg: #0d0d0d;
+            --muted: #666;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* ── Noise overlay ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.4;
+        }
+
+        /* ══════════════════════════════
+           NAVIGATION
+        ══════════════════════════════ */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(14px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            height: 60px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .nav-links { display: flex; gap: 20px; list-style: none; }
+        .nav-links a {
+            text-decoration: none;
+            color: #ccc;
+            text-transform: uppercase;
+            font-size: 0.73rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+        .nav-links a.active { border-bottom: 1px solid var(--accent); padding-bottom: 2px; }
+
+        .profile-icon-link {
+            display: flex; align-items: center;
+            color: var(--accent); text-decoration: none; transition: 0.3s;
+        }
+        .profile-icon-link svg { width: 22px; height: 22px; fill: currentColor; }
+        .profile-icon-link:hover { transform: scale(1.1); filter: drop-shadow(0 0 5px var(--accent)); }
+
+        /* ══════════════════════════════
+           HERO BANNER
+        ══════════════════════════════ */
+        .support-hero {
+            margin-top: 60px;
+            position: relative;
+            height: 340px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* Diagonal gold stripe */
+        .support-hero::before {
+            content: '';
+            position: absolute;
+            top: -60px; left: -100px;
+            width: 55%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(255,171,0,0.07) 0%, transparent 60%);
+            transform: skewX(-15deg);
+        }
+
+        /* Vertical scan line effect */
+        .support-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 80px,
+                    rgba(255,171,0,0.015) 80px,
+                    rgba(255,171,0,0.015) 81px
+            );
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+            opacity: 0.85;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 9vw, 8rem);
+            color: #fff;
+            line-height: 0.9;
+            letter-spacing: 3px;
+        }
+
+        .hero-title span { color: var(--accent); }
+
+        .hero-sub {
+            margin-top: 18px;
+            font-size: 0.9rem;
+            color: #777;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ══════════════════════════════
+           MARQUEE TICKER
+        ══════════════════════════════ */
+        .ticker-wrap {
+            width: 100%;
+            background: var(--accent);
+            overflow: hidden;
+            padding: 10px 0;
+            white-space: nowrap;
+        }
+
+        @keyframes ticker {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .ticker-inner {
+            display: inline-block;
+            animation: ticker 22s linear infinite;
+        }
+
+        .ticker-inner span {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.95rem;
+            letter-spacing: 4px;
+            color: #000;
+            margin: 0 40px;
+        }
+
+        .ticker-inner span::before { content: '◆  '; }
+
+        /* ══════════════════════════════
+           CONTACT CARDS GRID
+        ══════════════════════════════ */
+        .section-wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        .contact-section { padding: 90px 0 60px; }
+
+        .section-label {
+            font-size: 0.65rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .section-heading {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.8rem, 5vw, 4.5rem);
+            color: #fff;
+            letter-spacing: 2px;
+            line-height: 1;
+            margin-bottom: 50px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2px;
+            border: 1px solid var(--border);
+        }
+
+        .contact-card {
+            background: var(--card-bg);
+            padding: 40px 36px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            transition: background 0.4s, border-color 0.4s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 2px;
+            background: var(--accent);
+            transition: width 0.4s ease;
+        }
+
+        .contact-card:hover { background: #0f0f0f; border-color: #333; }
+        .contact-card:hover::before { width: 100%; }
+
+        .card-icon {
+            width: 48px; height: 48px;
+            margin-bottom: 22px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .card-icon svg {
+            width: 40px; height: 40px;
+            fill: var(--accent);
+            opacity: 0.9;
+            transition: transform 0.3s;
+        }
+
+        .contact-card:hover .card-icon svg { transform: scale(1.1); }
+
+        .card-tag {
+            font-size: 0.6rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.9rem;
+            color: #fff;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .card-value {
+            font-size: 1rem;
+            color: #bbb;
+            font-weight: 300;
+            line-height: 1.6;
+            word-break: break-all;
+        }
+
+        .card-note {
+            margin-top: 14px;
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* ══════════════════════════════
+           HOURS TABLE
+        ══════════════════════════════ */
+        .hours-section { padding: 60px 0; border-top: 1px solid var(--border); }
+
+        .hours-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 36px;
+        }
+
+        .hours-table tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+
+        .hours-table tr:hover { background: rgba(255,171,0,0.03); }
+
+        .hours-table td {
+            padding: 18px 0;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .hours-table td:first-child {
+            color: #777;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            width: 50%;
+        }
+
+        .hours-table td:last-child { color: #ddd; text-align: right; }
+
+        .hours-table .today td:first-child { color: var(--accent); }
+        .hours-table .today td:last-child  { color: var(--accent); font-weight: 600; }
+
+        .open-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            padding: 2px 10px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        /* ══════════════════════════════
+           CONTACT FORM
+        ══════════════════════════════ */
+        .form-section { padding: 80px 0 100px; border-top: 1px solid var(--border); }
+
+        .form-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .form-left p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin-top: 20px;
+            max-width: 380px;
+        }
+
+        .form-left .response-promise {
+            margin-top: 36px;
+            padding: 24px;
+            border-left: 3px solid var(--accent);
+            background: var(--accent-dim);
+        }
+
+        .form-left .response-promise p {
+            color: #ccc;
+            font-size: 0.8rem;
+            margin-top: 0;
+        }
+
+        .form-left .response-promise strong {
+            display: block;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .support-form { display: flex; flex-direction: column; gap: 16px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        .field-group { display: flex; flex-direction: column; gap: 8px; }
+
+        .field-group label {
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .field-group input,
+        .field-group select,
+        .field-group textarea {
+            background: var(--input-bg);
+            border: 1px solid #1c1c1c;
+            color: #fff;
+            padding: 16px 18px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            border-radius: 0;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .field-group select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23FFAB00' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            cursor: pointer;
+        }
+
+        .field-group select option { background: #111; }
+
+        .field-group input:focus,
+        .field-group select:focus,
+        .field-group textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px rgba(255,171,0,0.2), inset 0 0 20px rgba(255,171,0,0.03);
+        }
+
+        .field-group textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
+
+        .field-group input::placeholder,
+        .field-group textarea::placeholder { color: #3a3a3a; }
+
+        .submit-btn {
+            margin-top: 8px;
+            padding: 20px 0;
+            background: var(--accent);
+            color: #000;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 4px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s, box-shadow 0.3s, transform 0.15s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #ffc233;
+            box-shadow: 0 8px 30px rgba(255, 171, 0, 0.35);
+        }
+
+        .submit-btn:active { transform: scale(0.98); }
+
+        /* Success toast */
+        .toast {
+            position: fixed;
+            bottom: 40px; right: 40px;
+            background: var(--accent);
+            color: #000;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            padding: 18px 32px;
+            z-index: 9999;
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        /* ══════════════════════════════
+           FAQ SECTION
+        ══════════════════════════════ */
+        .faq-section { padding: 80px 0 100px; border-top: 1px solid var(--border); }
+
+        .faq-list { margin-top: 40px; }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+            cursor: pointer;
+            transition: color 0.3s;
+            user-select: none;
+        }
+
+        .faq-question:hover { color: var(--accent); }
+
+        .faq-question span {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+
+        .faq-icon {
+            font-size: 1.4rem;
+            color: var(--accent);
+            transition: transform 0.3s;
+            flex-shrink: 0;
+            margin-left: 20px;
+            font-family: monospace;
+        }
+
+        .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s ease, padding 0.3s;
+        }
+
+        .faq-item.open .faq-answer { max-height: 300px; }
+
+        .faq-answer p {
+            padding-bottom: 24px;
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            max-width: 700px;
+        }
+
+        /* ══════════════════════════════
+           FOOTER
+        ══════════════════════════════ */
+        footer {
+            text-align: center;
+            padding: 60px;
+            color: #333;
+            border-top: 1px solid #111;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* ══════════════════════════════
+           ANIMATIONS
+        ══════════════════════════════ */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        .fade-up.d1 { transition-delay: 0.1s; }
+        .fade-up.d2 { transition-delay: 0.2s; }
+        .fade-up.d3 { transition-delay: 0.3s; }
+        .fade-up.d4 { transition-delay: 0.4s; }
+
+        /* ══════════════════════════════
+           RESPONSIVE
+        ══════════════════════════════ */
+        @media (max-width: 900px) {
+            .form-layout { grid-template-columns: 1fr; gap: 50px; }
+            .form-row { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+        }
+
+        @media (max-width: 600px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .support-hero { height: 280px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav>
+    <a href="landing.html" class="logo">ROCKSTAR NEXUS</a>
+    <div class="nav-right">
+        <ul class="nav-links">
+            <li><a href="landing.html">Home</a></li>
+            <li><a href="Gallery.html">Gallery</a></li>
+            <li><a href="Customer.html">Store</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="landing.html#sell">Sell</a></li>
+            <li><a href="Support.html" class="active">Support</a></li>
+        </ul>
+        <a href="login.html" class="profile-icon-link" title="Login">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+        </a>
+    </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="support-hero">
+    <div class="hero-inner">
+        <p class="hero-eyebrow">We've Got You Covered</p>
+        <h1 class="hero-title">SUPPORT <span>HUB</span></h1>
+        <p class="hero-sub">24 / 7 — Elite Customer Service</p>
+    </div>
+</section>
+
+<!-- ══════════════ TICKER ══════════════ -->
+<div class="ticker-wrap">
+    <div class="ticker-inner">
+        <span>Phone Support</span>
+        <span>Email Us</span>
+        <span>Live Chat</span>
+        <span>WhatsApp</span>
+        <span>Returns & Refunds</span>
+        <span>Order Tracking</span>
+        <span>Technical Help</span>
+        <span>Phone Support</span>
+        <span>Email Us</span>
+        <span>Live Chat</span>
+        <span>WhatsApp</span>
+        <span>Returns & Refunds</span>
+        <span>Order Tracking</span>
+        <span>Technical Help</span>
+    </div>
+</div>
+
+<!-- ══════════════ CONTACT CARDS ══════════════ -->
+<section class="contact-section">
+    <div class="section-wrap">
+        <p class="section-label fade-up">Get In Touch</p>
+        <h2 class="section-heading fade-up d1">How To Reach Us</h2>
+
+        <div class="contact-grid">
+
+            <!-- Phone -->
+            <a href="tel:+94112345678" class="contact-card fade-up d1">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                </div>
+                <p class="card-tag">Call Us</p>
+                <h3 class="card-title">Phone Support</h3>
+                <p class="card-value">+94 77 608 9573</p>
+                <p class="card-value">+94 77 469 1246</p>
+                <p class="card-note">Mon – Fri &nbsp;|&nbsp; 9 AM – 9 PM</p>
+            </a>
+
+            <!-- WhatsApp -->
+            <a href="https://wa.me/94779000000" target="_blank" class="contact-card fade-up d2">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                </div>
+                <p class="card-tag">Instant Message</p>
+                <h3 class="card-title">WhatsApp</h3>
+                <p class="card-value">+94 77 469 1246</p>
+                <p class="card-note">Typically replies within minutes</p>
+            </a>
+
+            <!-- Email -->
+            <a href="mailto:support@rockstarnexus.com" class="contact-card fade-up d3">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                </div>
+                <p class="card-tag">Email</p>
+                <h3 class="card-title">Send A Message</h3>
+                <p class="card-value">support@rockstarnexus.com</p>
+                <p class="card-value">orders@rockstarnexus.com</p>
+                <p class="card-note">Response within 24 hours</p>
+            </a>
+
+            <!-- Location -->
+            <a href="https://maps.google.com" target="_blank" class="contact-card fade-up d4">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                </div>
+                <p class="card-tag">Visit Us</p>
+                <h3 class="card-title">Our Location</h3>
+                <p class="card-value">42 Gamer's Lane<br>Colombo 03, Sri Lanka</p>
+                <p class="card-note">Click to open in Google Maps</p>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════ HOURS ══════════════ -->
+<section class="hours-section">
+    <div class="section-wrap">
+        <p class="section-label fade-up">When We're Available</p>
+        <h2 class="section-heading fade-up d1">Support Hours</h2>
+
+        <table class="hours-table fade-up d2">
+            <tr>
+                <td>Monday</td>
+                <td>9:00 AM – 9:00 PM</td>
+            </tr>
+            <tr>
+                <td>Tuesday</td>
+                <td>9:00 AM – 9:00 PM</td>
+            </tr>
+            <tr>
+                <td>Wednesday</td>
+                <td>9:00 AM – 9:00 PM</td>
+            </tr>
+            <tr class="today">
+                <td>Thursday <span class="open-badge">Today</span></td>
+                <td>9:00 AM – 9:00 PM ✓</td>
+            </tr>
+            <tr>
+                <td>Friday</td>
+                <td>9:00 AM – 9:00 PM</td>
+            </tr>
+            <tr>
+                <td>Saturday</td>
+                <td>10:00 AM – 6:00 PM</td>
+            </tr>
+            <tr>
+                <td>Sunday</td>
+                <td>12:00 PM – 5:00 PM</td>
+            </tr>
+        </table>
+    </div>
+</section>
+
+<!-- ══════════════ CONTACT FORM ══════════════ -->
+<section class="form-section">
+    <div class="section-wrap">
+        <div class="form-layout">
+
+            <!-- Left copy -->
+            <div class="form-left fade-up">
+                <p class="section-label">Drop A Message</p>
+                <h2 class="section-heading" style="margin-bottom:0;">Send Us A<br>Ticket</h2>
+                <p>Fill out the form and a member of our elite support team will reach out to resolve your issue as fast as possible. No bots — real humans.</p>
+                <div class="response-promise">
+                    <strong>⚡ Guaranteed Response</strong>
+                    <p>We respond to every support ticket within 24 hours on business days. Priority tickets are handled within 2 hours.</p>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form class="support-form fade-up d2" id="supportForm" novalidate>
+                <div class="form-row">
+                    <div class="field-group">
+                        <label>First Name</label>
+                        <input type="text" id="firstName" placeholder="Jason" required>
+                    </div>
+                    <div class="field-group">
+                        <label>Last Name</label>
+                        <input type="text" id="lastName" placeholder="Brody" required>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="you@email.com" required>
+                </div>
+
+                <div class="field-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" placeholder="+94 77 000 0000">
+                </div>
+
+                <div class="field-group">
+                    <label>Order ID (Optional)</label>
+                    <input type="text" id="orderId" placeholder="RN-000000">
+                </div>
+
+                <div class="field-group">
+                    <label>Issue Category</label>
+                    <select id="category" required>
+                        <option value="" disabled selected>Select a category</option>
+                        <option>Order / Delivery</option>
+                        <option>Payment Issue</option>
+                        <option>Technical / Game Problem</option>
+                        <option>Refund / Return</option>
+                        <option>Account Access</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label>Describe Your Issue</label>
+                    <textarea id="message" placeholder="Tell us exactly what happened..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Ticket →</button>
+            </form>
+
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════ FAQ ══════════════ -->
+<section class="faq-section">
+    <div class="section-wrap">
+        <p class="section-label fade-up">Quick Answers</p>
+        <h2 class="section-heading fade-up d1">Frequently Asked</h2>
+
+        <div class="faq-list fade-up d2">
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How long does delivery take?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Standard delivery takes 2–5 business days within Sri Lanka. Express delivery (1–2 days) is available at checkout for an additional fee. Digital downloads are instant after payment confirmation.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Can I return or refund a game?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Physical games can be returned within 7 days if the seal is unbroken. Digital purchases are non-refundable once the key has been revealed. Defective physical items are replaced free of charge — contact us with a photo of the defect.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I track my order?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Once your order is dispatched you will receive a tracking number via email and SMS. You can paste that number into the courier's website to see real-time updates. Orders typically ship within 24 hours of payment.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What payment methods do you accept?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>We accept Visa, Mastercard, American Express, PayPal, bank transfer, and cash on delivery (COD) for eligible areas. Cryptocurrency payments are coming soon.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>My game key doesn't work — what do I do?</span>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Email orders@rockstarnexus.com with your order ID and a screenshot of the error message. We will verify and issue a replacement key or full refund within 2 business hours during working days.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+    &copy; 2026 Rockstar Nexus &nbsp;|&nbsp; Designed For The Elite &nbsp;|&nbsp;
+    <a href="mailto:support@rockstarnexus.com" style="color:#444; text-decoration:none;">support@rockstarnexus.com</a>
+</footer>
+
+<!-- Toast notification -->
+<div class="toast" id="toast">✓ &nbsp; TICKET SUBMITTED</div>
+
+<!-- ══════════════ SCRIPTS ══════════════ -->
+<script>
+    /* ── Scroll reveal ── */
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    /* ── FAQ accordion ── */
+    document.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const item = btn.parentElement;
+            const isOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+            if (!isOpen) item.classList.add('open');
+        });
+    });
+
+    /* ── Highlight today's row dynamically ── */
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const todayName = days[new Date().getDay()];
+    document.querySelectorAll('.hours-table tr').forEach(row => {
+        const cell = row.querySelector('td');
+        if (cell && cell.textContent.includes(todayName)) {
+            row.classList.add('today');
+            // Remove any hardcoded today class from other rows
+        } else {
+            row.classList.remove('today');
+        }
+    });
+
+    /* ── Form submission ── */
+    document.getElementById('supportForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const firstName = document.getElementById('firstName').value.trim();
+        const email     = document.getElementById('email').value.trim();
+        const category  = document.getElementById('category').value;
+        const message   = document.getElementById('message').value.trim();
+
+        if (!firstName || !email || !category || !message) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        /* Show toast */
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3500);
+
+        this.reset();
+    });
+</script>
+</body>
+</html>
