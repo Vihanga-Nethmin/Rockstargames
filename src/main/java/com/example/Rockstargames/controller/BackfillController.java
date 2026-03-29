@@ -52,11 +52,7 @@ public class BackfillController {
         int skipped  = 0;
 
         try {
-            // ── Fetch all orders ──────────────────────────────────────────────
-            // ADJUST these column names to match YOUR orders table:
-            //   customer_id → the username / JWT subject stored in orders
-            //   game_id     → the numeric game ID ("1"–"20")
-            //   price       → the price string
+
             @SuppressWarnings("unchecked")
             List<Object[]> orders = em.createNativeQuery(
                 "SELECT customer_id, game_id, price FROM orders"
@@ -67,7 +63,6 @@ public class BackfillController {
                 String gameId   = String.valueOf(row[1]);
                 String price    = row[2] != null ? String.valueOf(row[2]) : "";
 
-                // Resolve title + imageUrl from the static lookup
                 String title    = "Unknown Game";
                 String imageUrl = "";
                 for (String[] meta : GAME_META) {

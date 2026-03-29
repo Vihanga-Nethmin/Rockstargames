@@ -22,7 +22,6 @@ public class CustomerDto {
 
 
 
-    // Add these two fields (you are sending them in JSON)
     @NotBlank(message = "Email is mandatory")
     private String email;
 
