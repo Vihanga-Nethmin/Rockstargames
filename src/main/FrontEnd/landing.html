@@ -25,7 +25,6 @@
             overflow-x: hidden;
         }
 
-        /* --- Animations --- */
         @keyframes titleGlow {
             0% { text-shadow: 0 0 20px rgba(255, 171, 0, 0.6); }
             50% { text-shadow: 0 0 45px rgba(255, 171, 0, 0.9); }
@@ -49,24 +48,19 @@
             align-items: center;
             padding: 10px 5%;
             background: transparent;
-            backdrop-filter: none;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
             height: 60px;
             border-bottom: 1px solid transparent;
-            transition: background 0.4s ease,
-            border-color 0.4s ease,
-            backdrop-filter 0.4s ease;
+            transition: background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
         }
-
         nav.scrolled {
             background: rgba(0, 0, 0, 0.88);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .logo {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.6rem;
@@ -74,13 +68,7 @@
             letter-spacing: 2px;
             text-decoration: none;
         }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
+        .nav-right { display: flex; align-items: center; gap: 20px; }
         .nav-links { display: flex; gap: 20px; list-style: none; }
         .nav-links a {
             text-decoration: none;
@@ -91,14 +79,30 @@
             transition: color 0.3s;
         }
         .nav-links a:hover { color: var(--accent); }
-
         .nav-links a.active {
             color: var(--accent);
             border-bottom: 1px solid var(--accent);
             padding-bottom: 2px;
         }
+        /* Highlight the Requested link */
+        .nav-links a.requested-link {
+            color: var(--accent);
+            position: relative;
+        }
+        .nav-links a.requested-link::after {
+            content: 'NEW';
+            position: absolute;
+            top: -8px;
+            right: -28px;
+            background: var(--accent);
+            color: #000;
+            font-size: 0.5rem;
+            padding: 1px 4px;
+            border-radius: 2px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
 
-        /* Profile Icon */
         .profile-icon-link {
             display: flex;
             align-items: center;
@@ -107,23 +111,11 @@
             text-decoration: none;
             transition: 0.3s;
         }
-        .profile-icon-link svg {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
-        }
-        .profile-icon-link:hover {
-            transform: scale(1.1);
-            filter: drop-shadow(0 0 5px var(--accent));
-        }
+        .profile-icon-link svg { width: 24px; height: 24px; fill: currentColor; }
+        .profile-icon-link:hover { transform: scale(1.1); filter: drop-shadow(0 0 5px var(--accent)); }
 
         /* --- Hero --- */
-        .hero-wrapper {
-            overflow: hidden;
-            position: relative;
-            height: 100vh;
-        }
-
+        .hero-wrapper { overflow: hidden; position: relative; height: 100vh; }
         .hero {
             height: 100vh;
             background: linear-gradient(to bottom, rgba(0,0,0,0.2), var(--bg)),
@@ -136,9 +128,7 @@
             align-items: center;
             text-align: center;
             padding: 0 20px;
-            transition: transform 0.1s ease-out;
         }
-
         .hero h1 {
             font-family: 'Bebas Neue', sans-serif;
             font-size: clamp(4rem, 10vw, 9rem);
@@ -147,7 +137,6 @@
             margin-top: 40px;
             animation: titleGlow 3s infinite ease-in-out;
         }
-
         .hero p {
             font-size: 1.1rem;
             color: #fff;
@@ -155,7 +144,6 @@
             letter-spacing: 8px;
             margin-bottom: 20px;
         }
-
         .btn-main {
             padding: 15px 45px;
             background: var(--accent);
@@ -169,15 +157,11 @@
             border-radius: 2px;
             transition: background 0.3s, box-shadow 0.3s;
         }
-        .btn-main:hover {
-            background: #ffc233;
-            box-shadow: 0 0 30px rgba(255, 171, 0, 0.5);
-        }
+        .btn-main:hover { background: #ffc233; box-shadow: 0 0 30px rgba(255, 171, 0, 0.5); }
 
         /* --- Video Section --- */
         .video-section {
-            width: 100%;
-            height: 80vh;
+            width: 100%; height: 80vh;
             background: #000;
             position: relative;
             overflow: hidden;
@@ -187,25 +171,11 @@
             justify-content: center;
             align-items: center;
         }
-        .video-section video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.6;
-        }
+        .video-section video { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
 
         /* --- Search --- */
-        .search-outer {
-            width: 100%;
-            padding: 40px 0;
-            background: var(--bg);
-            display: flex;
-            justify-content: center;
-        }
-        .search-container {
-            width: 90%;
-            max-width: 1200px;
-        }
+        .search-outer { width: 100%; padding: 40px 0; background: var(--bg); display: flex; justify-content: center; }
+        .search-container { width: 90%; max-width: 1200px; }
         .search-container input {
             width: 100%;
             padding: 25px;
@@ -221,10 +191,7 @@
             outline: none;
             font-family: 'Barlow', sans-serif;
         }
-        .search-container input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 25px rgba(255, 171, 0, 0.15);
-        }
+        .search-container input:focus { border-color: var(--accent); box-shadow: 0 0 25px rgba(255, 171, 0, 0.15); }
         .search-container input::placeholder { color: #555; }
 
         /* --- Gallery --- */
@@ -237,13 +204,7 @@
             text-align: center;
             letter-spacing: 2px;
         }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
         .game-card {
             background: #0a0a0a;
             border: 1px solid var(--border);
@@ -252,67 +213,90 @@
             overflow: hidden;
             cursor: pointer;
         }
-        .game-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(255, 171, 0, 0.2);
-        }
-        .game-card img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            filter: grayscale(40%);
-            transition: filter 0.5s;
-        }
+        .game-card:hover { transform: translateY(-10px) scale(1.02); border-color: var(--accent); box-shadow: 0 10px 30px rgba(255, 171, 0, 0.2); }
+        .game-card img { width: 100%; height: 400px; object-fit: cover; filter: grayscale(40%); transition: filter 0.5s; }
         .game-card:hover img { filter: grayscale(0%); }
+        .game-info { padding: 25px; background: #0a0a0a; border-top: 2px solid var(--accent); }
+        .game-info h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 1px; color: #fff; }
+        .game-info .price { color: var(--accent); font-weight: bold; font-size: 1.4rem; font-family: 'Bebas Neue'; }
 
-        .game-info {
-            padding: 25px;
-            background: #0a0a0a;
-            border-top: 2px solid var(--accent);
+        /* =============================================
+           REQUEST A GAME SECTION (replaces old "Sell")
+           ============================================= */
+        .request-section {
+            padding: 100px 20px;
+            background: #030303;
+            position: relative;
+            overflow: hidden;
         }
-        .game-info h3 {
+        .request-section::before {
+            content: 'WANTED';
+            position: absolute;
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.8rem;
-            letter-spacing: 1px;
-            color: #fff;
-        }
-        .game-info .price {
-            color: var(--accent);
-            font-weight: bold;
-            font-size: 1.4rem;
-            font-family: 'Bebas Neue';
+            font-size: 10rem;
+            color: rgba(255,171,0,0.03);
+            letter-spacing: 10px;
+            pointer-events: none;
+            white-space: nowrap;
         }
 
-        /* --- Sell / Add Form --- */
-        .add-game-section { padding: 100px 20px; background: #030303; }
-        .add-form {
-            max-width: 600px;
+        .request-form {
+            max-width: 620px;
             margin: 0 auto;
             background: #0a0a0a;
             padding: 50px;
             border-right: 5px solid var(--accent);
+            position: relative;
         }
-        .add-form h2 {
+        .request-form-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+        .request-form-header svg {
+            width: 36px;
+            height: 36px;
+            fill: var(--accent);
+            flex-shrink: 0;
+        }
+        .request-form h2 {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 3rem;
-            margin-bottom: 20px;
+            line-height: 1;
         }
-        .add-form input {
+        .request-form p.subtitle {
+            color: #666;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            margin-top: 6px;
+        }
+
+        .request-form input {
             width: 100%;
-            padding: 15px;
-            margin-bottom: 10px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
             background: #000;
             color: white;
             border: 1px solid #333;
             font-family: 'Barlow', sans-serif;
             font-size: 1rem;
             outline: none;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            border-radius: 2px;
         }
-        .add-form input:focus { border-color: var(--accent); }
-        .add-form input::placeholder { color: #555; letter-spacing: 1px; }
-        .add-form button {
+        .request-form input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(255,171,0,0.08);
+        }
+        .request-form input::placeholder { color: #555; letter-spacing: 1px; }
+
+        .request-form button {
             width: 100%;
             padding: 20px;
             background: var(--accent);
@@ -323,11 +307,48 @@
             cursor: pointer;
             transition: background 0.3s, box-shadow 0.3s;
             letter-spacing: 2px;
+            border-radius: 2px;
+            margin-top: 4px;
         }
-        .add-form button:hover {
-            background: #ffc233;
-            box-shadow: 0 0 30px rgba(255, 171, 0, 0.4);
+        .request-form button:hover { background: #ffc233; box-shadow: 0 0 30px rgba(255, 171, 0, 0.4); }
+
+        /* Trending counter badge on button */
+        .live-count {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            color: #444;
+            font-size: 0.78rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
+        .live-count span.dot {
+            width: 7px; height: 7px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { opacity:1; transform: scale(1); }
+            50% { opacity:0.4; transform: scale(1.4); }
+        }
+
+        .view-requested-btn {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 14px;
+            border: 1px solid #333;
+            color: #aaa;
+            text-decoration: none;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            transition: border-color 0.3s, color 0.3s;
+            border-radius: 2px;
+        }
+        .view-requested-btn:hover { border-color: var(--accent); color: var(--accent); }
 
         /* --- Footer --- */
         footer {
@@ -339,7 +360,6 @@
             letter-spacing: 3px;
         }
 
-        /* --- Mobile --- */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .hero h1 { font-size: 4rem; }
@@ -357,7 +377,7 @@
             <li><a href="Gallery.html">Gallery</a></li>
             <li><a href="Customer.html">Store</a></li>
             <li><a href="community.html">Community</a></li>
-            <li><a href="#sell">Sell</a></li>
+            <li><a href="newgames.html" class="requested-link">Requested</a></li>
             <li><a href="Support.html">Support</a></li>
         </ul>
         <a href="login.html" class="profile-icon-link" title="Login / Profile">
@@ -399,50 +419,55 @@
     <section class="gallery" id="gallery"></section>
 </div>
 
-<!-- ===================== SELL / ADD FORM ===================== -->
-<section class="add-game-section" id="sell">
-    <div class="add-form reveal">
-        <h2>List Your Title</h2>
-        <form id="gameForm">
-            <input type="text" id="game_id" placeholder="GAME ID">
-            <input type="text" id="title" placeholder="GAME TITLE">
-            <button type="submit">Deploy to Store</button>
-        </form>
+<!-- ===================== REQUEST A GAME SECTION ===================== -->
+<section class="request-section" id="request">
+    <div class="request-form reveal">
+        <div class="request-form-header">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+            <h2>Want a Game?</h2>
+        </div>
+        <p class="subtitle">Request it — we track what players want most</p>
+
+        <input type="text" id="req_game" placeholder="GAME TITLE (e.g. Cyberpunk 2077)" maxlength="80">
+        <input type="text" id="req_platform" placeholder="PLATFORM (e.g. PS5, PC, Xbox)">
+
+        <button onclick="submitRequest()">Submit Request</button>
+
+        <div class="live-count">
+            <span class="dot"></span>
+            <span id="reqCount">0</span> requests submitted by players
+        </div>
+
+        <a href="newgames.html" class="view-requested-btn">
+            🔥 View Trending Requests →
+        </a>
     </div>
 </section>
 
-<!-- ===================== FOOTER ===================== -->
 <footer>
     &copy; 2026 ROCKSTAR NEXUS | DESIGNED FOR THE ELITE
 </footer>
 
-<!-- ===================== SCRIPTS ===================== -->
 <script>
-    /* ---- Transparent → Dark nav on scroll ---- */
     const mainNav = document.getElementById('mainNav');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 10) {
-            mainNav.classList.add('scrolled');
-        } else {
-            mainNav.classList.remove('scrolled');
-        }
+        mainNav.classList.toggle('scrolled', window.scrollY > 10);
     });
 
     /* ---- Scroll Reveal ---- */
     window.addEventListener('scroll', () => {
         document.querySelectorAll('.reveal').forEach(el => {
-            if (el.getBoundingClientRect().top < window.innerHeight - 100) {
+            if (el.getBoundingClientRect().top < window.innerHeight - 100)
                 el.classList.add('active');
-            }
         });
     });
 
-    /* ---- On Load ---- */
     window.onload = () => {
-        setTimeout(() => {
-            document.getElementById('heroContent').classList.add('active');
-        }, 300);
+        setTimeout(() => document.getElementById('heroContent').classList.add('active'), 300);
         loadGames();
+        updateReqCount();
     };
 
     /* ---- Static Game Data ---- */
@@ -466,7 +491,6 @@
     }
 
     function loadGames() { render(rockstarGames); }
-
     function render(data) {
         const gallery = document.getElementById("gallery");
         gallery.innerHTML = "";
@@ -476,22 +500,64 @@
             setTimeout(() => card.classList.add('active'), 100);
         });
     }
-
     function filterGames() {
         const query = document.getElementById('searchInput').value.toLowerCase();
         render(rockstarGames.filter(g => g.title.toLowerCase().includes(query)));
     }
 
-    /* ---- Prevent default form submit ---- */
-    document.getElementById('gameForm').addEventListener('submit', e => {
-        e.preventDefault();
-        const id    = document.getElementById('game_id').value.trim();
-        const title = document.getElementById('title').value.trim();
-        if (id && title) {
-            alert(`"${title}" has been listed in the store!`);
-            document.getElementById('gameForm').reset();
+    /* ---- Request a Game ---- */
+    function getRequests() {
+        try { return JSON.parse(localStorage.getItem('gameRequests') || '[]'); } catch { return []; }
+    }
+    function saveRequests(arr) {
+        localStorage.setItem('gameRequests', JSON.stringify(arr));
+    }
+    function updateReqCount() {
+        document.getElementById('reqCount').textContent = getRequests().length;
+    }
+
+    function submitRequest() {
+        const gameInput    = document.getElementById('req_game');
+        const platInput    = document.getElementById('req_platform');
+        const gameName     = gameInput.value.trim();
+        const platform     = platInput.value.trim();
+
+        if (!gameName) {
+            gameInput.focus();
+            gameInput.style.borderColor = '#ff4444';
+            setTimeout(() => gameInput.style.borderColor = '#333', 1500);
+            return;
         }
-    });
+
+        const requests = getRequests();
+
+        const existing = requests.find(r => r.game.toLowerCase() === gameName.toLowerCase());
+        if (existing) {
+            existing.votes = (existing.votes || 1) + 1;
+            existing.platforms = existing.platforms || [];
+            if (platform && !existing.platforms.includes(platform)) existing.platforms.push(platform);
+        } else {
+            requests.push({
+                game: gameName,
+                platform: platform || 'Any',
+                platforms: platform ? [platform] : ['Any'],
+                votes: 1,
+                date: new Date().toISOString()
+            });
+        }
+
+        saveRequests(requests);
+        updateReqCount();
+
+        gameInput.value = '';
+        platInput.value = '';
+
+        const btn = document.querySelector('.request-form button');
+        const orig = btn.textContent;
+        btn.textContent = '✓ REQUEST LOGGED';
+        btn.style.background = '#00c853';
+        setTimeout(() => { btn.textContent = orig; btn.style.background = 'var(--accent)'; }, 2000);
+    }
 </script>
 </body>
 </html>
