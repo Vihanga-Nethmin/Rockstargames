@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Requested Games | Rockstar Nexus</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap');
+
+        :root {
+            --bg: #050505;
+            --text: #ffffff;
+            --accent: #FFAB00;
+            --border: #1a1a1a;
+            --card-bg: #0a0a0a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* ---- Navigation ---- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            height: 60px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .nav-links { display: flex; gap: 20px; list-style: none; }
+        .nav-links a {
+            text-decoration: none;
+            color: #eee;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+        .nav-links a.active {
+            color: var(--accent);
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 2px;
+        }
+        .profile-icon-link {
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent); text-decoration: none; transition: 0.3s;
+        }
+        .profile-icon-link svg { width: 24px; height: 24px; fill: currentColor; }
+        .profile-icon-link:hover { transform: scale(1.1); filter: drop-shadow(0 0 5px var(--accent)); }
+
+        /* ---- Page Header ---- */
+        .page-header {
+            padding-top: 100px;
+            padding-bottom: 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255,171,0,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .header-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+        .page-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 8vw, 7rem);
+            color: #fff;
+            line-height: 1;
+            letter-spacing: 4px;
+        }
+        .page-header h1 span { color: var(--accent); }
+        .page-header .desc {
+            margin-top: 16px;
+            color: #555;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ---- Stats Bar ---- */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            padding: 24px 5%;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: #080808;
+            flex-wrap: wrap;
+        }
+        .stat-item { text-align: center; }
+        .stat-item .val {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.4rem;
+            color: var(--accent);
+            line-height: 1;
+        }
+        .stat-item .lbl {
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #555;
+            margin-top: 4px;
+        }
+
+        /* ---- Controls ---- */
+        .controls {
+            max-width: 1200px;
+            margin: 50px auto 30px;
+            padding: 0 30px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .search-bar {
+            flex: 1;
+            min-width: 200px;
+            padding: 14px 20px;
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            color: #fff;
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            outline: none;
+            transition: border-color 0.3s;
+            border-radius: 2px;
+        }
+        .search-bar:focus { border-color: var(--accent); }
+        .search-bar::placeholder { color: #444; }
+
+        .sort-btns { display: flex; gap: 8px; }
+        .sort-btn {
+            padding: 13px 20px;
+            background: transparent;
+            border: 1px solid #222;
+            color: #666;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+        .sort-btn:hover, .sort-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ---- Requests Grid ---- */
+        .grid-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px 100px;
+        }
+
+        .requests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        /* Rank #1 gets full width */
+        .requests-grid .request-card:first-child {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        .requests-grid .request-card:first-child .card-body { flex: 1; }
+        .requests-grid .request-card:first-child .vote-block { flex-shrink: 0; }
+
+        .request-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 28px;
+            position: relative;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            animation: fadeUp 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .request-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(255,171,0,0.12);
+        }
+
+        /* Rank badge */
+        .rank-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: #333;
+        }
+        .rank-badge.top { color: var(--accent); }
+        .rank-badge.top2 { color: #aaa; }
+        .rank-badge.top3 { color: #cd7f32; }
+
+        /* Hot glow strip */
+        .request-card.hot::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .card-body { padding-top: 8px; }
+        .game-title-req {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            color: #fff;
+            margin-top: 20px;
+            line-height: 1;
+        }
+        .game-title-req.big { font-size: 2.4rem; margin-top: 0; }
+
+        .platform-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .platform-tag {
+            padding: 3px 10px;
+            background: #111;
+            border: 1px solid #2a2a2a;
+            color: #888;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 1px;
+        }
+
+        .req-date {
+            margin-top: 10px;
+            font-size: 0.7rem;
+            color: #333;
+            letter-spacing: 1px;
+        }
+
+        /* Vote Block */
+        .vote-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            margin-top: 20px;
+        }
+        .requests-grid .request-card:first-child .vote-block { margin-top: 0; }
+
+        .vote-btn {
+            background: transparent;
+            border: 1px solid #222;
+            color: #555;
+            width: 50px;
+            height: 50px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .vote-btn:hover, .vote-btn.voted {
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 12px rgba(255,171,0,0.2);
+        }
+        .vote-count {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            color: var(--accent);
+            line-height: 1;
+        }
+        .vote-label { font-size: 0.6rem; color: #444; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* Progress bar */
+        .vote-bar-wrap { margin-top: 14px; }
+        .vote-bar-track {
+            height: 2px;
+            background: #111;
+            border-radius: 1px;
+            overflow: hidden;
+        }
+        .vote-bar-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 1s ease;
+        }
+
+        /* ---- Empty State ---- */
+        .empty-state {
+            text-align: center;
+            padding: 100px 20px;
+            display: none;
+        }
+        .empty-state .icon { font-size: 4rem; opacity: 0.2; }
+        .empty-state p {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: #333;
+            letter-spacing: 3px;
+            margin-top: 16px;
+        }
+        .empty-state small { color: #2a2a2a; letter-spacing: 2px; font-size: 0.75rem; text-transform: uppercase; }
+
+        /* ---- CTA Banner ---- */
+        .cta-banner {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 30px;
+        }
+        .cta-inner {
+            background: linear-gradient(135deg, #0f0f0f 0%, #111 100%);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            padding: 40px 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .cta-inner h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+        .cta-inner p { color: #555; font-size: 0.85rem; letter-spacing: 1px; margin-top: 4px; }
+        .cta-btn {
+            padding: 16px 40px;
+            background: var(--accent);
+            color: #000;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border-radius: 2px;
+            transition: background 0.3s, box-shadow 0.3s;
+            white-space: nowrap;
+        }
+        .cta-btn:hover { background: #ffc233; box-shadow: 0 0 25px rgba(255,171,0,0.4); }
+
+        /* ---- Footer ---- */
+        footer {
+            text-align: center;
+            padding: 60px;
+            color: #333;
+            border-top: 1px solid #111;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .stats-bar { gap: 30px; }
+            .requests-grid .request-card:first-child { flex-direction: column; }
+            .cta-inner { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===================== NAVIGATION ===================== -->
+<nav>
+    <a href="landing.html" class="logo">ROCKSTAR NEXUS</a>
+    <div class="nav-right">
+        <ul class="nav-links">
+            <li><a href="landing.html">Home</a></li>
+            <li><a href="Gallery.html">Gallery</a></li>
+            <li><a href="Customer.html">Store</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="newgames.html" class="active">Requested</a></li>
+            <li><a href="Support.html">Support</a></li>
+        </ul>
+        <a href="login.html" class="profile-icon-link" title="Login / Profile">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+        </a>
+    </div>
+</nav>
+
+<!-- ===================== PAGE HEADER ===================== -->
+<div class="page-header">
+    <p class="header-eyebrow">🔥 Community Driven</p>
+    <h1>TRENDING <span>REQUESTS</span></h1>
+    <p class="desc">Games your players want in our store — most voted wins</p>
+</div>
+
+<!-- ===================== STATS BAR ===================== -->
+<div class="stats-bar">
+    <div class="stat-item">
+        <div class="val" id="totalRequests">0</div>
+        <div class="lbl">Total Requests</div>
+    </div>
+    <div class="stat-item">
+        <div class="val" id="totalVotes">0</div>
+        <div class="lbl">Total Votes</div>
+    </div>
+    <div class="stat-item">
+        <div class="val" id="topGame">—</div>
+        <div class="lbl">Most Wanted</div>
+    </div>
+</div>
+
+<!-- ===================== CONTROLS ===================== -->
+<div class="controls">
+    <input class="search-bar" type="text" id="filterInput" placeholder="Filter requests..." oninput="renderRequests()">
+    <div class="sort-btns">
+        <button class="sort-btn active" onclick="setSort('votes', this)">🔥 Most Voted</button>
+        <button class="sort-btn" onclick="setSort('date', this)">🕐 Newest</button>
+        <button class="sort-btn" onclick="setSort('alpha', this)">A–Z</button>
+    </div>
+</div>
+
+<!-- ===================== REQUESTS GRID ===================== -->
+<div class="grid-wrapper">
+    <div class="requests-grid" id="requestsGrid"></div>
+    <div class="empty-state" id="emptyState">
+        <div class="icon">🎮</div>
+        <p>No Requests Yet</p>
+        <small>Be the first to request a game on the home page</small>
+    </div>
+</div>
+
+<!-- ===================== CTA BANNER ===================== -->
+<div class="cta-banner">
+    <div class="cta-inner">
+        <div>
+            <h3>Don't See Your Game?</h3>
+            <p>Submit a new request from the home page — we check this list every week.</p>
+        </div>
+        <a href="landing.html#request" class="cta-btn">Request a Game</a>
+    </div>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+    &copy; 2026 ROCKSTAR NEXUS | DESIGNED FOR THE ELITE
+</footer>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+    let sortMode = 'votes';
+    const votedSet = new Set(JSON.parse(localStorage.getItem('votedGames') || '[]'));
+
+    function getRequests() {
+        try { return JSON.parse(localStorage.getItem('gameRequests') || '[]'); } catch { return []; }
+    }
+    function saveRequests(arr) { localStorage.setItem('gameRequests', JSON.stringify(arr)); }
+    function saveVoted() { localStorage.setItem('votedGames', JSON.stringify([...votedSet])); }
+
+    function setSort(mode, btn) {
+        sortMode = mode;
+        document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderRequests();
+    }
+
+    function getSorted(data) {
+        const q = document.getElementById('filterInput').value.toLowerCase();
+        let filtered = data.filter(r => r.game.toLowerCase().includes(q));
+        if (sortMode === 'votes') return filtered.sort((a,b) => (b.votes||1) - (a.votes||1));
+        if (sortMode === 'date')  return filtered.sort((a,b) => new Date(b.date) - new Date(a.date));
+        if (sortMode === 'alpha') return filtered.sort((a,b) => a.game.localeCompare(b.game));
+        return filtered;
+    }
+
+    function updateStats(data) {
+        document.getElementById('totalRequests').textContent = data.length;
+        const totalVotes = data.reduce((s, r) => s + (r.votes||1), 0);
+        document.getElementById('totalVotes').textContent = totalVotes;
+        const top = data.sort((a,b) => (b.votes||1) - (a.votes||1))[0];
+        document.getElementById('topGame').textContent = top ? top.game.split(' ').slice(0,2).join(' ').toUpperCase() : '—';
+    }
+
+    function renderRequests() {
+        const raw = getRequests();
+        updateStats([...raw]);
+        const data = getSorted(raw);
+        const grid = document.getElementById('requestsGrid');
+        const empty = document.getElementById('emptyState');
+
+        if (!data.length) {
+            grid.innerHTML = '';
+            empty.style.display = 'block';
+            return;
+        }
+        empty.style.display = 'none';
+
+        const maxVotes = Math.max(...data.map(r => r.votes||1));
+
+        grid.innerHTML = data.map((r, i) => {
+            const votes = r.votes || 1;
+            const pct = Math.round((votes / maxVotes) * 100);
+            const isHot = i < 3;
+            const hasVoted = votedSet.has(r.game.toLowerCase());
+
+            let rankClass = '';
+            let rankLabel = `#${i+1}`;
+            if (i === 0) { rankClass = 'top';  rankLabel = '🥇 #1 MOST WANTED'; }
+            if (i === 1) { rankClass = 'top2'; rankLabel = '🥈 #2'; }
+            if (i === 2) { rankClass = 'top3'; rankLabel = '🥉 #3'; }
+
+            const isBig = i === 0;
+            const dateStr = r.date ? new Date(r.date).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) : '';
+            const platforms = r.platforms || [r.platform || 'Any'];
+            const platformTags = platforms.map(p => `<span class="platform-tag">${p}</span>`).join('');
+
+            return `
+            <div class="request-card ${isHot ? 'hot' : ''}" style="animation-delay: ${i * 0.06}s">
+                <span class="rank-badge ${rankClass}">${rankLabel}</span>
+                <div class="card-body">
+                    <h3 class="game-title-req ${isBig ? 'big' : ''}">${escHtml(r.game)}</h3>
+                    <div class="platform-tags">${platformTags}</div>
+                    ${dateStr ? `<p class="req-date">Requested ${dateStr}</p>` : ''}
+                    <div class="vote-bar-wrap">
+                        <div class="vote-bar-track"><div class="vote-bar-fill" style="width:${pct}%"></div></div>
+                    </div>
+                </div>
+                <div class="vote-block">
+                    <button class="vote-btn ${hasVoted ? 'voted' : ''}" onclick="vote('${escAttr(r.game)}', this)" title="Vote for this game">▲</button>
+                    <div class="vote-count">${votes}</div>
+                    <div class="vote-label">votes</div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function vote(gameName, btn) {
+        const key = gameName.toLowerCase();
+        const requests = getRequests();
+        const entry = requests.find(r => r.game.toLowerCase() === key);
+        if (!entry) return;
+
+        if (votedSet.has(key)) {
+            // Toggle off
+            votedSet.delete(key);
+            entry.votes = Math.max(1, (entry.votes||1) - 1);
+            btn.classList.remove('voted');
+        } else {
+            votedSet.add(key);
+            entry.votes = (entry.votes||1) + 1;
+            btn.classList.add('voted');
+        }
+
+        saveRequests(requests);
+        saveVoted();
+        renderRequests();
+    }
+
+    function escHtml(str) {
+        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function escAttr(str) {
+        return str.replace(/'/g, "\\'");
+    }
+
+    // Seed demo data if no requests exist yet
+    function seedDemo() {
+        const existing = getRequests();
+        if (existing.length > 0) return;
+        const demos = [
+            { game: "Cyberpunk 2077", platform: "PS5", platforms: ["PS5", "PC"], votes: 24, date: new Date(Date.now() - 86400000*3).toISOString() },
+            { game: "Elden Ring", platform: "Xbox", platforms: ["Xbox", "PC"], votes: 18, date: new Date(Date.now() - 86400000*5).toISOString() },
+            { game: "Spider-Man 2", platform: "PS5", platforms: ["PS5"], votes: 15, date: new Date(Date.now() - 86400000*2).toISOString() },
+            { game: "Baldur's Gate 3", platform: "PC", platforms: ["PC"], votes: 11, date: new Date(Date.now() - 86400000*7).toISOString() },
+            { game: "Hogwarts Legacy", platform: "PC", platforms: ["PC", "PS5"], votes: 8, date: new Date(Date.now() - 86400000*10).toISOString() },
+            { game: "Alan Wake 2", platform: "Xbox", platforms: ["Xbox", "PS5"], votes: 6, date: new Date(Date.now() - 86400000*1).toISOString() },
+        ];
+        saveRequests(demos);
+    }
+
+    seedDemo();
+    renderRequests();
+</script>
+</body>
+</html>
