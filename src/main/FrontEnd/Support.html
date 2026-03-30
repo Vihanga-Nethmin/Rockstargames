@@ -29,7 +29,6 @@
             cursor: default;
         }
 
-        /* ── Noise overlay ── */
         body::before {
             content: '';
             position: fixed;
@@ -40,9 +39,7 @@
             opacity: 0.4;
         }
 
-        /* ══════════════════════════════
-           NAVIGATION
-        ══════════════════════════════ */
+        /* NAV */
         nav {
             display: flex;
             justify-content: space-between;
@@ -86,9 +83,7 @@
         .profile-icon-link svg { width: 22px; height: 22px; fill: currentColor; }
         .profile-icon-link:hover { transform: scale(1.1); filter: drop-shadow(0 0 5px var(--accent)); }
 
-        /* ══════════════════════════════
-           HERO BANNER
-        ══════════════════════════════ */
+        /* HERO */
         .support-hero {
             margin-top: 60px;
             position: relative;
@@ -100,7 +95,6 @@
             background: #000;
         }
 
-        /* Diagonal gold stripe */
         .support-hero::before {
             content: '';
             position: absolute;
@@ -111,7 +105,6 @@
             transform: skewX(-15deg);
         }
 
-        /* Vertical scan line effect */
         .support-hero::after {
             content: '';
             position: absolute;
@@ -125,11 +118,7 @@
             );
         }
 
-        .hero-inner {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-        }
+        .hero-inner { position: relative; z-index: 2; text-align: center; }
 
         .hero-eyebrow {
             font-size: 0.7rem;
@@ -158,9 +147,7 @@
             text-transform: uppercase;
         }
 
-        /* ══════════════════════════════
-           MARQUEE TICKER
-        ══════════════════════════════ */
+        /* TICKER */
         .ticker-wrap {
             width: 100%;
             background: var(--accent);
@@ -189,9 +176,7 @@
 
         .ticker-inner span::before { content: '◆  '; }
 
-        /* ══════════════════════════════
-           CONTACT CARDS GRID
-        ══════════════════════════════ */
+        /* CONTACT CARDS */
         .section-wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
         .contact-section { padding: 90px 0 60px; }
@@ -290,9 +275,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* ══════════════════════════════
-           HOURS TABLE
-        ══════════════════════════════ */
+        /* HOURS */
         .hours-section { padding: 60px 0; border-top: 1px solid var(--border); }
 
         .hours-table {
@@ -340,147 +323,303 @@
         }
 
         /* ══════════════════════════════
-           CONTACT FORM
+           VISUAL BANNER (replaces form)
         ══════════════════════════════ */
-        .form-section { padding: 80px 0 100px; border-top: 1px solid var(--border); }
-
-        .form-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: start;
+        .visual-banner-section {
+            padding: 80px 0 100px;
+            border-top: 1px solid var(--border);
+            overflow: hidden;
         }
 
-        .form-left p {
-            color: #666;
-            font-size: 0.9rem;
-            line-height: 1.8;
-            margin-top: 20px;
-            max-width: 380px;
+        .visual-banner-inner {
+            position: relative;
+            width: 100%;
+            min-height: 520px;
+            display: flex;
+            align-items: stretch;
+            overflow: hidden;
         }
 
-        .form-left .response-promise {
-            margin-top: 36px;
-            padding: 24px;
-            border-left: 3px solid var(--accent);
-            background: var(--accent-dim);
+        /* Left dark panel */
+        .vb-left {
+            flex: 0 0 42%;
+            background: #000;
+            padding: 64px 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
         }
 
-        .form-left .response-promise p {
-            color: #ccc;
-            font-size: 0.8rem;
-            margin-top: 0;
+        .vb-left::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 28px,
+                    rgba(255,171,0,0.03) 28px,
+                    rgba(255,171,0,0.03) 29px
+            );
         }
 
-        .form-left .response-promise strong {
-            display: block;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.4rem;
+        .vb-eyebrow {
+            font-size: 0.62rem;
+            letter-spacing: 7px;
+            text-transform: uppercase;
             color: var(--accent);
-            letter-spacing: 1px;
-            margin-bottom: 6px;
+            margin-bottom: 16px;
+            position: relative;
         }
 
-        .support-form { display: flex; flex-direction: column; gap: 16px; }
+        .vb-heading {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 5vw, 5.5rem);
+            color: #fff;
+            line-height: 0.92;
+            letter-spacing: 2px;
+            position: relative;
+        }
 
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .vb-heading em {
+            font-style: normal;
+            color: var(--accent);
+        }
 
-        .field-group { display: flex; flex-direction: column; gap: 8px; }
+        .vb-body {
+            margin-top: 24px;
+            font-size: 0.88rem;
+            color: #666;
+            line-height: 1.8;
+            max-width: 300px;
+            position: relative;
+        }
 
-        .field-group label {
-            font-size: 0.65rem;
-            letter-spacing: 3px;
+        .vb-channels {
+            margin-top: 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+        }
+
+        .vb-channel {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border: 1px solid #1a1a1a;
+            background: rgba(255,171,0,0.04);
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        .vb-channel:hover {
+            border-color: var(--accent);
+            background: rgba(255,171,0,0.08);
+        }
+
+        .vb-channel svg {
+            width: 18px; height: 18px;
+            fill: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .vb-channel-info { flex: 1; }
+
+        .vb-channel-label {
+            font-size: 0.58rem;
+            letter-spacing: 4px;
             text-transform: uppercase;
             color: var(--muted);
         }
 
-        .field-group input,
-        .field-group select,
-        .field-group textarea {
-            background: var(--input-bg);
-            border: 1px solid #1c1c1c;
-            color: #fff;
-            padding: 16px 18px;
-            font-family: 'Barlow', sans-serif;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            border-radius: 0;
-            appearance: none;
-            -webkit-appearance: none;
+        .vb-channel-value {
+            font-size: 0.88rem;
+            color: #ccc;
+            margin-top: 2px;
         }
 
-        .field-group select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23FFAB00' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            cursor: pointer;
-        }
-
-        .field-group select option { background: #111; }
-
-        .field-group input:focus,
-        .field-group select:focus,
-        .field-group textarea:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 1px rgba(255,171,0,0.2), inset 0 0 20px rgba(255,171,0,0.03);
-        }
-
-        .field-group textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
-
-        .field-group input::placeholder,
-        .field-group textarea::placeholder { color: #3a3a3a; }
-
-        .submit-btn {
-            margin-top: 8px;
-            padding: 20px 0;
-            background: var(--accent);
-            color: #000;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.5rem;
-            letter-spacing: 4px;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s, box-shadow 0.3s, transform 0.15s;
-            width: 100%;
-        }
-
-        .submit-btn:hover {
-            background: #ffc233;
-            box-shadow: 0 8px 30px rgba(255, 171, 0, 0.35);
-        }
-
-        .submit-btn:active { transform: scale(0.98); }
-
-        /* Success toast */
-        .toast {
-            position: fixed;
-            bottom: 40px; right: 40px;
-            background: var(--accent);
-            color: #000;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.1rem;
-            letter-spacing: 3px;
-            padding: 18px 32px;
-            z-index: 9999;
-            transform: translateY(120px);
+        .vb-channel-arrow {
+            font-size: 1rem;
+            color: var(--accent);
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: none;
+            transition: opacity 0.3s, transform 0.3s;
         }
-        .toast.show { transform: translateY(0); opacity: 1; }
 
-        /* ══════════════════════════════
-           FAQ SECTION
-        ══════════════════════════════ */
-        .faq-section { padding: 80px 0 100px; border-top: 1px solid var(--border); }
+        .vb-channel:hover .vb-channel-arrow {
+            opacity: 1;
+            transform: translateX(4px);
+        }
 
-        .faq-list { margin-top: 40px; }
-
-        .faq-item {
-            border-bottom: 1px solid var(--border);
+        /* Right SVG illustration panel */
+        .vb-right {
+            flex: 1;
+            position: relative;
+            background: #060606;
             overflow: hidden;
         }
+
+        /* Decorative grid pattern */
+        .vb-right::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                    linear-gradient(rgba(255,171,0,0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,171,0,0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
+        }
+
+        /* Large glowing circle */
+        .vb-right::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,171,0,0.07) 0%, transparent 70%);
+        }
+
+        .vb-illustration {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vb-illustration svg {
+            width: 82%;
+            max-width: 560px;
+            height: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Pulse ring animation */
+        @keyframes pulse-ring {
+            0%   { transform: scale(0.85); opacity: 0.6; }
+            50%  { transform: scale(1.05); opacity: 0.15; }
+            100% { transform: scale(0.85); opacity: 0.6; }
+        }
+
+        @keyframes float-y {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-12px); }
+        }
+
+        @keyframes scan-line {
+            0%   { top: 10%; opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { top: 90%; opacity: 0; }
+        }
+
+        @keyframes blink-dot {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.2; }
+        }
+
+        .pulse-ring {
+            animation: pulse-ring 3.5s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        .float-group {
+            animation: float-y 4s ease-in-out infinite;
+        }
+
+        .scan-el {
+            animation: scan-line 4s ease-in-out infinite;
+        }
+
+        .blink-dot {
+            animation: blink-dot 1.2s ease-in-out infinite;
+        }
+
+        .blink-dot-2 {
+            animation: blink-dot 1.2s ease-in-out 0.4s infinite;
+        }
+
+        .blink-dot-3 {
+            animation: blink-dot 1.2s ease-in-out 0.8s infinite;
+        }
+
+        /* Vertical label on right edge */
+        .vb-vertical-label {
+            position: absolute;
+            right: 28px;
+            bottom: 40px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 6px;
+            color: rgba(255,171,0,0.25);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            z-index: 2;
+        }
+
+        /* Corner accent marks */
+        .vb-corner {
+            position: absolute;
+            width: 20px; height: 20px;
+            z-index: 2;
+        }
+        .vb-corner.tl { top: 16px; left: 16px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+        .vb-corner.tr { top: 16px; right: 16px; border-top: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+        .vb-corner.bl { bottom: 16px; left: 16px; border-bottom: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+        .vb-corner.br { bottom: 16px; right: 16px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+
+        /* Status bar at bottom of right panel */
+        .vb-statusbar {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 44px;
+            background: rgba(0,0,0,0.7);
+            border-top: 1px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 28px;
+            z-index: 3;
+            backdrop-filter: blur(8px);
+        }
+
+        .vb-status-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #555;
+        }
+
+        .vb-status-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #3ddc84;
+            box-shadow: 0 0 6px #3ddc84;
+        }
+
+        .vb-status-dot.amber {
+            background: var(--accent);
+            box-shadow: 0 0 6px var(--accent);
+        }
+
+        /* FAQ */
+        .faq-section { padding: 80px 0 100px; border-top: 1px solid var(--border); }
+        .faq-list { margin-top: 40px; }
+        .faq-item { border-bottom: 1px solid var(--border); overflow: hidden; }
 
         .faq-question {
             display: flex;
@@ -527,9 +666,7 @@
             max-width: 700px;
         }
 
-        /* ══════════════════════════════
-           FOOTER
-        ══════════════════════════════ */
+        /* FOOTER */
         footer {
             text-align: center;
             padding: 60px;
@@ -540,9 +677,7 @@
             text-transform: uppercase;
         }
 
-        /* ══════════════════════════════
-           ANIMATIONS
-        ══════════════════════════════ */
+        /* ANIMATIONS */
         .fade-up {
             opacity: 0;
             transform: translateY(40px);
@@ -554,11 +689,11 @@
         .fade-up.d3 { transition-delay: 0.3s; }
         .fade-up.d4 { transition-delay: 0.4s; }
 
-        /* ══════════════════════════════
-           RESPONSIVE
-        ══════════════════════════════ */
+        /* RESPONSIVE */
         @media (max-width: 900px) {
-            .form-layout { grid-template-columns: 1fr; gap: 50px; }
+            .vb-left { clip-path: none; flex: none; width: 100%; }
+            .visual-banner-inner { flex-direction: column; }
+            .vb-right { min-height: 340px; }
             .form-row { grid-template-columns: 1fr; }
             .nav-links { display: none; }
         }
@@ -571,7 +706,7 @@
 </head>
 <body>
 
-<!-- ══════════════ NAV ══════════════ -->
+<!-- NAV -->
 <nav>
     <a href="landing.html" class="logo">ROCKSTAR NEXUS</a>
     <div class="nav-right">
@@ -591,7 +726,7 @@
     </div>
 </nav>
 
-<!-- ══════════════ HERO ══════════════ -->
+<!-- HERO -->
 <section class="support-hero">
     <div class="hero-inner">
         <p class="hero-eyebrow">We've Got You Covered</p>
@@ -600,7 +735,7 @@
     </div>
 </section>
 
-<!-- ══════════════ TICKER ══════════════ -->
+<!-- TICKER -->
 <div class="ticker-wrap">
     <div class="ticker-inner">
         <span>Phone Support</span>
@@ -620,16 +755,14 @@
     </div>
 </div>
 
-<!-- ══════════════ CONTACT CARDS ══════════════ -->
+<!-- CONTACT CARDS -->
 <section class="contact-section">
     <div class="section-wrap">
         <p class="section-label fade-up">Get In Touch</p>
         <h2 class="section-heading fade-up d1">How To Reach Us</h2>
 
         <div class="contact-grid">
-
-            <!-- Phone -->
-            <a href="tel:+94112345678" class="contact-card fade-up d1">
+            <a href="tel:+94776089573" class="contact-card fade-up d1">
                 <div class="card-icon">
                     <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
                 </div>
@@ -640,8 +773,7 @@
                 <p class="card-note">Mon – Fri &nbsp;|&nbsp; 9 AM – 9 PM</p>
             </a>
 
-            <!-- WhatsApp -->
-            <a href="https://wa.me/94779000000" target="_blank" class="contact-card fade-up d2">
+            <a href="https://wa.me/94774691246" target="_blank" class="contact-card fade-up d2">
                 <div class="card-icon">
                     <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                 </div>
@@ -651,7 +783,6 @@
                 <p class="card-note">Typically replies within minutes</p>
             </a>
 
-            <!-- Email -->
             <a href="mailto:support@rockstarnexus.com" class="contact-card fade-up d3">
                 <div class="card-icon">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -663,7 +794,6 @@
                 <p class="card-note">Response within 24 hours</p>
             </a>
 
-            <!-- Location -->
             <a href="https://maps.google.com" target="_blank" class="contact-card fade-up d4">
                 <div class="card-icon">
                     <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -673,127 +803,219 @@
                 <p class="card-value">42 Gamer's Lane<br>Colombo 03, Sri Lanka</p>
                 <p class="card-note">Click to open in Google Maps</p>
             </a>
-
         </div>
     </div>
 </section>
 
-<!-- ══════════════ HOURS ══════════════ -->
+<!-- HOURS -->
 <section class="hours-section">
     <div class="section-wrap">
         <p class="section-label fade-up">When We're Available</p>
         <h2 class="section-heading fade-up d1">Support Hours</h2>
 
-        <table class="hours-table fade-up d2">
-            <tr>
-                <td>Monday</td>
-                <td>9:00 AM – 9:00 PM</td>
-            </tr>
-            <tr>
-                <td>Tuesday</td>
-                <td>9:00 AM – 9:00 PM</td>
-            </tr>
-            <tr>
-                <td>Wednesday</td>
-                <td>9:00 AM – 9:00 PM</td>
-            </tr>
-            <tr class="today">
-                <td>Thursday <span class="open-badge">Today</span></td>
-                <td>9:00 AM – 9:00 PM ✓</td>
-            </tr>
-            <tr>
-                <td>Friday</td>
-                <td>9:00 AM – 9:00 PM</td>
-            </tr>
-            <tr>
-                <td>Saturday</td>
-                <td>10:00 AM – 6:00 PM</td>
-            </tr>
-            <tr>
-                <td>Sunday</td>
-                <td>12:00 PM – 5:00 PM</td>
-            </tr>
+        <table class="hours-table fade-up d2" id="hoursTable">
+            <tr data-day="1"><td>Monday</td><td>9:00 AM – 9:00 PM</td></tr>
+            <tr data-day="2"><td>Tuesday</td><td>9:00 AM – 9:00 PM</td></tr>
+            <tr data-day="3"><td>Wednesday</td><td>9:00 AM – 9:00 PM</td></tr>
+            <tr data-day="4"><td>Thursday</td><td>9:00 AM – 9:00 PM</td></tr>
+            <tr data-day="5"><td>Friday</td><td>9:00 AM – 9:00 PM</td></tr>
+            <tr data-day="6"><td>Saturday</td><td>10:00 AM – 6:00 PM</td></tr>
+            <tr data-day="0"><td>Sunday</td><td>12:00 PM – 5:00 PM</td></tr>
         </table>
     </div>
 </section>
 
-<!-- ══════════════ CONTACT FORM ══════════════ -->
-<section class="form-section">
+<!-- ══════════════ VISUAL BANNER (replaces form) ══════════════ -->
+<section class="visual-banner-section">
     <div class="section-wrap">
-        <div class="form-layout">
+        <div class="visual-banner-inner fade-up">
 
-            <!-- Left copy -->
-            <div class="form-left fade-up">
-                <p class="section-label">Drop A Message</p>
-                <h2 class="section-heading" style="margin-bottom:0;">Send Us A<br>Ticket</h2>
-                <p>Fill out the form and a member of our elite support team will reach out to resolve your issue as fast as possible. No bots — real humans.</p>
-                <div class="response-promise">
-                    <strong>⚡ Guaranteed Response</strong>
-                    <p>We respond to every support ticket within 24 hours on business days. Priority tickets are handled within 2 hours.</p>
+            <!-- Left: copy + channel links -->
+            <div class="vb-left">
+                <p class="vb-eyebrow">Direct Contact</p>
+                <h2 class="vb-heading">REACH<br>OUR <em>TEAM</em><br>NOW</h2>
+                <p class="vb-body">Skip the queue. Our elite support crew is standing by across every channel — pick the one that works for you.</p>
+
+                <div class="vb-channels">
+                    <a href="tel:+94776089573" class="vb-channel">
+                        <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                        <div class="vb-channel-info">
+                            <div class="vb-channel-label">Call Now</div>
+                            <div class="vb-channel-value">+94 77 608 9573</div>
+                        </div>
+                        <span class="vb-channel-arrow">→</span>
+                    </a>
+                    <a href="https://wa.me/94774691246" target="_blank" class="vb-channel">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        <div class="vb-channel-info">
+                            <div class="vb-channel-label">WhatsApp</div>
+                            <div class="vb-channel-value">+94 77 469 1246</div>
+                        </div>
+                        <span class="vb-channel-arrow">→</span>
+                    </a>
+                    <a href="mailto:support@rockstarnexus.com" class="vb-channel">
+                        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                        <div class="vb-channel-info">
+                            <div class="vb-channel-label">Email</div>
+                            <div class="vb-channel-value">support@rockstarnexus.com</div>
+                        </div>
+                        <span class="vb-channel-arrow">→</span>
+                    </a>
                 </div>
             </div>
 
-            <!-- Form -->
-            <form class="support-form fade-up d2" id="supportForm" novalidate>
-                <div class="form-row">
-                    <div class="field-group">
-                        <label>First Name</label>
-                        <input type="text" id="firstName" placeholder="Jason" required>
+            <!-- Right: custom SVG illustration -->
+            <div class="vb-right">
+                <div class="vb-corner tl"></div>
+                <div class="vb-corner tr"></div>
+                <div class="vb-corner bl"></div>
+                <div class="vb-corner br"></div>
+
+                <div class="vb-illustration">
+                    <svg viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#FFAB00" stop-opacity="0.18"/>
+                                <stop offset="100%" stop-color="#FFAB00" stop-opacity="0"/>
+                            </radialGradient>
+                            <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#FFAB00" stop-opacity="0.35"/>
+                                <stop offset="100%" stop-color="#FFAB00" stop-opacity="0"/>
+                            </radialGradient>
+                            <filter id="blur4">
+                                <feGaussianBlur stdDeviation="4"/>
+                            </filter>
+                            <filter id="blur2">
+                                <feGaussianBlur stdDeviation="2"/>
+                            </filter>
+                        </defs>
+
+                        <!-- Outer pulse rings -->
+                        <circle class="pulse-ring" cx="280" cy="210" r="170" fill="none" stroke="#FFAB00" stroke-width="1" stroke-opacity="0.08"/>
+                        <circle class="pulse-ring" cx="280" cy="210" r="140" fill="none" stroke="#FFAB00" stroke-width="1" stroke-opacity="0.12" style="animation-delay:-1.2s"/>
+                        <circle cx="280" cy="210" r="108" fill="url(#glow1)"/>
+
+                        <!-- Floating main group -->
+                        <g class="float-group">
+
+                            <!-- Headset base circle -->
+                            <circle cx="280" cy="210" r="82" fill="#0d0d0d" stroke="#222" stroke-width="1.5"/>
+                            <circle cx="280" cy="210" r="82" fill="url(#glow2)" opacity="0.5"/>
+
+                            <!-- Headset band (arc) -->
+                            <path d="M220 210 Q220 148 280 148 Q340 148 340 210"
+                                  fill="none" stroke="#FFAB00" stroke-width="6" stroke-linecap="round"/>
+
+                            <!-- Left ear cup -->
+                            <rect x="206" y="200" width="22" height="36" rx="9"
+                                  fill="#111" stroke="#FFAB00" stroke-width="2"/>
+                            <rect x="210" y="204" width="14" height="28" rx="6"
+                                  fill="#1a1400"/>
+
+                            <!-- Right ear cup -->
+                            <rect x="332" y="200" width="22" height="36" rx="9"
+                                  fill="#111" stroke="#FFAB00" stroke-width="2"/>
+                            <rect x="336" y="204" width="14" height="28" rx="6"
+                                  fill="#1a1400"/>
+
+                            <!-- Mic arm -->
+                            <path d="M340 230 Q360 250 350 272" fill="none" stroke="#FFAB00" stroke-width="3" stroke-linecap="round"/>
+                            <!-- Mic capsule -->
+                            <ellipse cx="348" cy="275" rx="7" ry="10" fill="#111" stroke="#FFAB00" stroke-width="2"/>
+                            <ellipse cx="348" cy="275" rx="3" ry="5" fill="#FFAB00" opacity="0.6"/>
+
+                            <!-- Inner detail lines on left cup -->
+                            <line x1="213" y1="212" x2="221" y2="212" stroke="#FFAB00" stroke-width="1" stroke-opacity="0.4"/>
+                            <line x1="213" y1="218" x2="221" y2="218" stroke="#FFAB00" stroke-width="1" stroke-opacity="0.4"/>
+                            <line x1="213" y1="224" x2="221" y2="224" stroke="#FFAB00" stroke-width="1" stroke-opacity="0.4"/>
+
+                        </g>
+
+                        <!-- Signal wave lines emanating right -->
+                        <g opacity="0.5">
+                            <path d="M360 195 Q380 210 360 225" fill="none" stroke="#FFAB00" stroke-width="1.5" stroke-linecap="round" stroke-opacity="0.6"/>
+                            <path d="M372 185 Q400 210 372 235" fill="none" stroke="#FFAB00" stroke-width="1.5" stroke-linecap="round" stroke-opacity="0.4"/>
+                            <path d="M386 174 Q422 210 386 246" fill="none" stroke="#FFAB00" stroke-width="1.5" stroke-linecap="round" stroke-opacity="0.2"/>
+                        </g>
+
+                        <!-- Chat bubble top-right -->
+                        <g transform="translate(390, 90)">
+                            <rect x="0" y="0" width="120" height="64" rx="10" fill="#111" stroke="#2a2a2a" stroke-width="1"/>
+                            <polygon points="16,64 8,80 32,64" fill="#111" stroke="#2a2a2a" stroke-width="1"/>
+                            <!-- Typing dots -->
+                            <circle class="blink-dot" cx="32" cy="32" r="6" fill="#FFAB00"/>
+                            <circle class="blink-dot-2" cx="60" cy="32" r="6" fill="#FFAB00"/>
+                            <circle class="blink-dot-3" cx="88" cy="32" r="6" fill="#FFAB00"/>
+                        </g>
+
+                        <!-- Response time badge top-left -->
+                        <g transform="translate(42, 80)">
+                            <rect x="0" y="0" width="130" height="56" rx="6" fill="#0d0d0d" stroke="#1e1e1e" stroke-width="1"/>
+                            <rect x="0" y="0" width="4" height="56" rx="2" fill="#FFAB00"/>
+                            <text x="16" y="20" font-family="'Bebas Neue', sans-serif" font-size="10" fill="#FFAB00" letter-spacing="2">RESPONSE TIME</text>
+                            <text x="16" y="42" font-family="'Bebas Neue', sans-serif" font-size="22" fill="#ffffff" letter-spacing="1">&lt; 2 HOURS</text>
+                        </g>
+
+                        <!-- Status indicator bottom-left -->
+                        <g transform="translate(52, 310)">
+                            <rect x="0" y="0" width="120" height="44" rx="6" fill="#0d0d0d" stroke="#1e1e1e" stroke-width="1"/>
+                            <circle class="blink-dot" cx="18" cy="22" r="5" fill="#3ddc84"/>
+                            <text x="32" y="17" font-family="'Bebas Neue', sans-serif" font-size="8" fill="#555" letter-spacing="2">STATUS</text>
+                            <text x="32" y="33" font-family="'Bebas Neue', sans-serif" font-size="13" fill="#3ddc84" letter-spacing="1">ONLINE NOW</text>
+                        </g>
+
+                        <!-- Decorative cross marks -->
+                        <g stroke="#FFAB00" stroke-width="1.5" stroke-opacity="0.3">
+                            <line x1="76" y1="170" x2="86" y2="170"/>
+                            <line x1="81" y1="165" x2="81" y2="175"/>
+                            <line x1="468" y1="320" x2="478" y2="320"/>
+                            <line x1="473" y1="315" x2="473" y2="325"/>
+                            <line x1="100" y1="350" x2="108" y2="350"/>
+                            <line x1="104" y1="346" x2="104" y2="354"/>
+                        </g>
+
+                        <!-- Corner data readout bottom-right -->
+                        <g transform="translate(390, 320)">
+                            <text font-family="'Courier New', monospace" font-size="9" fill="#333" letter-spacing="1">
+                                <tspan x="0" dy="0">SYS // NEXUS-SUPPORT</tspan>
+                                <tspan x="0" dy="14">AGENTS: ACTIVE</tspan>
+                                <tspan x="0" dy="14">UPTIME: 99.9%</tspan>
+                            </text>
+                        </g>
+
+                        <!-- Scan line animation overlay -->
+                        <rect class="scan-el" x="160" y="100" width="240" height="1.5" fill="#FFAB00" opacity="0.06" filter="url(#blur2)"/>
+                    </svg>
+                </div>
+
+                <span class="vb-vertical-label">ROCKSTAR NEXUS // SUPPORT DIVISION</span>
+
+                <div class="vb-statusbar">
+                    <div class="vb-status-item">
+                        <div class="vb-status-dot"></div>
+                        All Systems Online
                     </div>
-                    <div class="field-group">
-                        <label>Last Name</label>
-                        <input type="text" id="lastName" placeholder="Brody" required>
+                    <div class="vb-status-item">
+                        <div class="vb-status-dot amber"></div>
+                        High Priority Queue Active
+                    </div>
+                    <div class="vb-status-item">
+                        Avg. Response &nbsp;<strong style="color:#FFAB00">&lt; 2 hrs</strong>
                     </div>
                 </div>
-
-                <div class="field-group">
-                    <label>Email Address</label>
-                    <input type="email" id="email" placeholder="you@email.com" required>
-                </div>
-
-                <div class="field-group">
-                    <label>Phone Number</label>
-                    <input type="tel" id="phone" placeholder="+94 77 000 0000">
-                </div>
-
-                <div class="field-group">
-                    <label>Order ID (Optional)</label>
-                    <input type="text" id="orderId" placeholder="RN-000000">
-                </div>
-
-                <div class="field-group">
-                    <label>Issue Category</label>
-                    <select id="category" required>
-                        <option value="" disabled selected>Select a category</option>
-                        <option>Order / Delivery</option>
-                        <option>Payment Issue</option>
-                        <option>Technical / Game Problem</option>
-                        <option>Refund / Return</option>
-                        <option>Account Access</option>
-                        <option>Other</option>
-                    </select>
-                </div>
-
-                <div class="field-group">
-                    <label>Describe Your Issue</label>
-                    <textarea id="message" placeholder="Tell us exactly what happened..." required></textarea>
-                </div>
-
-                <button type="submit" class="submit-btn">Submit Ticket →</button>
-            </form>
+            </div>
 
         </div>
     </div>
 </section>
 
-<!-- ══════════════ FAQ ══════════════ -->
+<!-- FAQ -->
 <section class="faq-section">
     <div class="section-wrap">
         <p class="section-label fade-up">Quick Answers</p>
         <h2 class="section-heading fade-up d1">Frequently Asked</h2>
 
         <div class="faq-list fade-up d2">
-
             <div class="faq-item">
                 <div class="faq-question">
                     <span>How long does delivery take?</span>
@@ -843,21 +1065,16 @@
                     <p>Email orders@rockstarnexus.com with your order ID and a screenshot of the error message. We will verify and issue a replacement key or full refund within 2 business hours during working days.</p>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
 
-<!-- ══════════════ FOOTER ══════════════ -->
+<!-- FOOTER -->
 <footer>
     &copy; 2026 Rockstar Nexus &nbsp;|&nbsp; Designed For The Elite &nbsp;|&nbsp;
     <a href="mailto:support@rockstarnexus.com" style="color:#444; text-decoration:none;">support@rockstarnexus.com</a>
 </footer>
 
-<!-- Toast notification -->
-<div class="toast" id="toast">✓ &nbsp; TICKET SUBMITTED</div>
-
-<!-- ══════════════ SCRIPTS ══════════════ -->
 <script>
     /* ── Scroll reveal ── */
     const observer = new IntersectionObserver(entries => {
@@ -881,39 +1098,21 @@
         });
     });
 
-    /* ── Highlight today's row dynamically ── */
-    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    const todayName = days[new Date().getDay()];
-    document.querySelectorAll('.hours-table tr').forEach(row => {
-        const cell = row.querySelector('td');
-        if (cell && cell.textContent.includes(todayName)) {
+    /* ── Highlight today's row dynamically (uses actual JS date) ── */
+    const todayIndex = new Date().getDay(); // 0=Sun, 1=Mon … 6=Sat
+    document.querySelectorAll('#hoursTable tr').forEach(row => {
+        const dayAttr = parseInt(row.getAttribute('data-day'), 10);
+        if (dayAttr === todayIndex) {
             row.classList.add('today');
-            // Remove any hardcoded today class from other rows
-        } else {
-            row.classList.remove('today');
+            const firstCell = row.querySelector('td');
+            // Append "Today" badge
+            const badge = document.createElement('span');
+            badge.className = 'open-badge';
+            badge.textContent = 'Today';
+            firstCell.appendChild(badge);
+            // Append check to hours cell
+            row.querySelectorAll('td')[1].textContent += ' ✓';
         }
-    });
-
-    /* ── Form submission ── */
-    document.getElementById('supportForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const firstName = document.getElementById('firstName').value.trim();
-        const email     = document.getElementById('email').value.trim();
-        const category  = document.getElementById('category').value;
-        const message   = document.getElementById('message').value.trim();
-
-        if (!firstName || !email || !category || !message) {
-            alert('Please fill in all required fields.');
-            return;
-        }
-
-        /* Show toast */
-        const toast = document.getElementById('toast');
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3500);
-
-        this.reset();
     });
 </script>
 </body>
